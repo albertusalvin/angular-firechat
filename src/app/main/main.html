@@ -2,7 +2,7 @@
 
   <div ng-include="'app/components/navbar/navbar.html'"></div>
 
-  <div class="jumbotron text-center">
+  <!-- <div class="jumbotron text-center">
     <h1>'Allo, 'Allo!</h1>
     <p class="lead">
       <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
@@ -21,6 +21,56 @@
           <p><a ng-href="{{awesomeThing.url}}">{{awesomeThing.url}}</a></p>
         </div>
       </div>
+    </div>
+  </div> -->
+
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Register</h1>
+    </div>
+
+    <div class="col-xs-12">
+      <form name="formRegister" novalidate data-ng-submit="createUser()">
+
+        <div class="form-group" 
+          data-ng-class="{ 'has-error': formRegister.registerEmail.$invalid && formRegister.registerEmail.$dirty }">
+          <label for="register-email">
+            E-mail
+            <span class="text-danger" data-ng-show="formRegister.registerEmail.$invalid"> required </span>
+          </label>
+          <input type="email" class="form-control" 
+            id="register-email" name="registerEmail" 
+            data-ng-model="register.email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="register-password">
+            Password
+            <span class="text-danger" data-ng-show="formRegister.registerPassword.$invalid"> required </span>
+          </label>
+          <input type="password" class="form-control"
+            id="register-password" name="registerPassword"
+            data-ng-model="register.password" required>
+        </div>
+
+        <div class="form-group">
+          <label for="register-confirm-password">
+            Confirm Password
+            <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$invalid"> required </span>
+            <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$valid && (register.password !== register.confirmPassword)"> must match password </span>
+          </label>
+          <input type="password" class="form-control"
+            id="register-confirm-password" name="registerConfirmPassword"
+            data-ng-model="register.confirmPassword" required>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary" 
+          data-ng-disabled="formRegister.$invalid || (register.password !== register.confirmPassword)">
+            Register
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
