@@ -1,9 +1,6 @@
 angular.module "angularFirechat"
   .controller "MainCtrl", ($scope, toastr, GlobalSetting) ->
 
-
-    
-
     $scope.register = 
       email: null
       password: null
@@ -18,10 +15,10 @@ angular.module "angularFirechat"
       if error
         toastr.error 'Error creating user:', error
       else
-        resetRegister()
+        resetRegisterModel()
         toastr.success 'Successfully created user account with uid: ' + userData.uid, 'Success'
 
-    resetRegister = ->
+    resetRegisterModel = ->
       $scope.register =
         email: null
         password: null
