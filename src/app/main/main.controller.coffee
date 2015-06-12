@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, toastr) ->
+  .controller "MainCtrl", ($scope, toastr, GlobalSetting) ->
 
 
     
@@ -9,10 +9,10 @@ angular.module "angularFirechat"
       password: null
       confirmPassword: null
 
-    ref = new Firebase("https://sweltering-inferno-4271.firebaseio.com")
+    firebase = new Firebase(GlobalSetting.firebaseAppUrl)
 
     $scope.createUser = ->
-      ref.createUser $scope.register, createUserCallback
+      firebase.createUser $scope.register, createUserCallback
 
     createUserCallback = (error, userData) ->
       if error

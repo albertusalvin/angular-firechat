@@ -1,3 +1,6 @@
+setting =
+  firebaseAppUrl: "https://sweltering-inferno-4271.firebaseio.com"
+
 angular.module 'angularFirechat', [
     'ngAnimate',
     'ngCookies',
@@ -14,4 +17,5 @@ angular.module 'angularFirechat', [
         controller: "MainCtrl"
       .otherwise
         redirectTo: "/"
+  .constant 'GlobalSetting', setting
 
