@@ -13,6 +13,36 @@
   }
 }
 
+
+
+
+
+#top-navbar {
+  margin-bottom: 0;
+}
+
+#bottom-footer {
+  border-top: 1px solid rgb(200, 200, 200);
+  padding-top: 3em;
+  padding-bottom: 3em;
+
+  background-color: rgb(54, 54, 54);
+  color: white;
+}
+
+#main-page-container {
+  padding-left: 0;
+  padding-right: 0;
+
+  #row-register {
+    padding-top: 2em;
+    padding-bottom: 1em;
+  }
+}
+
+
+
+
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector
