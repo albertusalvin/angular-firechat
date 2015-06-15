@@ -8,7 +8,8 @@ angular.module 'angularFirechat', [
     'ngSanitize',
     'ngRoute',
     'ui.bootstrap',
-    'toastr'
+    'toastr',
+    'localstorageService'
   ]
   .config ($routeProvider) ->
     $routeProvider
