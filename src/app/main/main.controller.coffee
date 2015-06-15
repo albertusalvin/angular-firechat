@@ -14,18 +14,18 @@ angular.module "angularFirechat"
 
     firebase = new Firebase(GlobalSetting.firebaseAppUrl)
 
-    $scope.createUser = ->
-      firebase.createUser $scope.register, createUserCallback
+    $scope.registerUser = ->
+      firebase.createUser $scope.register, registerUserCallback
 
     $scope.loginUser = ->
       firebase.authWithPassword $scope.login, loginUserCallback
 
-    createUserCallback = (error, userData) ->
+    registerUserCallback = (error, userData) ->
       if error
-        toastr.error 'Error creating user:', error
+        showRegisterUserErrorMessage()
       else
         resetRegisterModel()
-        toastr.success 'Successfully created user account with uid: ' + userData.uid, 'Success'
+        showRegisterUserSuccessMessage()
 
     loginUserCallback = (error, authData) ->
       if error
@@ -35,6 +35,11 @@ angular.module "angularFirechat"
         resetLoginModel()
         
         $scope.currentUser = authData[authData.provider].email    
+    showRegisterUserSuccessMessage = ->
+      toastr.success 'Successfully created user account!', 'Success'
+
+    showRegisterUserErrorMessage = ->
+      toastr.error 'Error creating user:', 'Error'
 
     showLoginSuccessMessage = ->
       toastr.success 'Hell yeah, login success!'
