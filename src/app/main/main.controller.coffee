@@ -31,10 +31,12 @@ angular.module "angularFirechat"
       if error
         showLoginErrorMessage error.code
       else
+        updateCurrentUser(authData)
         showLoginSuccessMessage()
         resetLoginModel()
-        
-        $scope.currentUser = authData[authData.provider].email    
+    updateCurrentUser = (authData) ->
+      $scope.currentUser = authData[authData.provider].email
+
     showRegisterUserSuccessMessage = ->
       toastr.success 'Successfully created user account!', 'Success'
 
