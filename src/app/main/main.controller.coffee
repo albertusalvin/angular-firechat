@@ -9,16 +9,25 @@ angular.module "angularFirechat"
       email: null
       password: null
       confirmPassword: null
+      username: null
+
 
     $scope.currentUser = "No user login"
 
-    firebase = new Firebase(GlobalSetting.firebaseAppUrl)
+    firebase = null
 
     $scope.registerUser = ->
-      firebase.createUser $scope.register, registerUserCallback
+      regData =
+        email: $scope.register.email
+        password: $scope.register.password
+        
+      firebase.createUser regData, registerUserCallback
 
     $scope.loginUser = ->
       firebase.authWithPassword $scope.login, loginUserCallback
+
+    initiateFirebase = ->
+      firebase = new Firebase(GlobalSetting.firebaseAppUrl)
 
     registerUserCallback = (error, userData) ->
       if error
@@ -54,17 +63,19 @@ angular.module "angularFirechat"
       else if errorCode is 'INVALID_PASSWORD'
         toastr.error 'Wrong password', 'Login Failed'
       else
-        toastr.error 'Login Failed'    
+        toastr.error 'Login Failed'
 
     resetRegisterModel = ->
       $scope.register =
         email: null
         password: null
         confirmPassword: null
+        username: null
         
     resetLoginModel = ->
       $scope.login =
         email: null
         password: null
 
+    initiateFirebase()
 
