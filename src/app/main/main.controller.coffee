@@ -33,8 +33,23 @@ angular.module "angularFirechat"
       if error
         showRegisterUserErrorMessage()
       else
-        resetRegisterModel()
-        showRegisterUserSuccessMessage()
+        recordNewUser userData.uid, $scope.register.email, $scope.register.username
+          .then ->
+            resetRegisterModel()
+            showRegisterUserSuccessMessage()
+
+    recordNewUser = (userId, email, userName) ->
+      def = $q.defer()
+      
+      newUser =
+        'uid': userId
+        'email': email
+        'username': userName
+      
+      firebase.child(GlobalSetting.tableNameFirechatUsers).push newUser, ->
+        def.resolve()
+
+      return def.promise
 
     loginUserCallback = (error, authData) ->
       if error
