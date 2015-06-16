@@ -76,10 +76,22 @@
             Confirm Password
             <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$dirty && formRegister.registerConfirmPassword.$invalid"> required </span>
             <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$valid && (register.password !== register.confirmPassword)"> must match password </span>
+            <span class="text-success" data-ng-show="formRegister.registerConfirmPassword.$valid && (register.password === register.confirmPassword)"> password match </span>
           </label>
           <input type="password" class="form-control"
             id="register-confirm-password" name="registerConfirmPassword"
             data-ng-model="register.confirmPassword" required>
+        </div>
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formRegister.registerUsername.$dirty && formRegister.registerUsername.$invalid }">
+          <label for="register-username">
+            Pick a username
+            <span class="text-danger" data-ng-show="formRegister.registerUsername.$dirty && formRegister.registerUsername.$invalid"> required </span>
+          </label>
+          <input type="text" class="form-control"
+            id="register-username" name="registerUsername"
+            data-ng-model="register.username" required>
         </div>
 
         <div class="form-group">
