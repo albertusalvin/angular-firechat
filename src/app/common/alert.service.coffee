@@ -1,10 +1,10 @@
 angular.module "alertService", []
   .service "AlertService", (toastr) ->
 
-    this.showRegisterUserSuccessMessage = ->
+    this.showRegisterSuccessMessage = ->
       toastr.success 'Successfully created user account!', 'Success'
 
-    this.showRegisterUserErrorMessage = ->
+    this.showRegisterErrorMessage = ->
       toastr.error 'Error creating user:', 'Error'
 
     this.showLoginSuccessMessage = ->

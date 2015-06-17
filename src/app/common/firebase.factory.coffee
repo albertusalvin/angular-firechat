@@ -35,14 +35,14 @@ angular.module "firebaseFactory", []
 
       def.promise
 
-    FirebaseFactory.recordNewUser = (userId, email, userName) ->
+    FirebaseFactory.recordNewFirechatUser = (uid, email, username) ->
       def = $q.defer()
       
       if firebaseRef
         newUser =
-          'uid': userId
+          'uid': uid
           'email': email
-          'username': userName
+          'username': username
         
         tableFirechatUsers = firebaseRef.child(GlobalSetting.tableNameFirechatUsers)
         tableFirechatUsers.push newUser, -> def.resolve()
