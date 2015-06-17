@@ -16,10 +16,12 @@ angular.module "angularFirechat"
     $scope.registerUser = ->
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
         .then (userData) ->
-          resetRegisterModel()
-          AlertService.showRegisterUserSuccessMessage()
+          FirebaseFactory.recordNewFirechatUser userData.uid, $scope.register.email, $scope.register.username
+            .then ->
+              resetRegisterModel()
+              AlertService.showRegisterSuccessMessage()
         .catch ->
-          AlertService.showRegisterUserErrorMessage()
+          AlertService.showRegisterErrorMessage()
 
     $scope.loginUser = ->
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
