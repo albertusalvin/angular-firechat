@@ -44,10 +44,26 @@ angular.module "firebaseFactory", []
           'email': email
           'username': username
         
-        tableFirechatUsers = firebaseRef.child(GlobalSetting.tableNameFirechatUsers)
+        tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
         tableFirechatUsers.push newUser, -> def.resolve()
       else
         def.reject 'Firebase is not initialized'
+
+      return def.promise
+
+    FirebaseFactory.getFirechatUserByUid = (uid) ->
+      def = $q.defer()
+      result = null
+
+      tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
+      tableFirechatUsers
+        .orderByChild 'uid'
+        .startAt uid
+        .endAt uid
+        .on 'value', (snapshot) ->          
+          for key, value of snapshot.val()
+            result = value
+          def.resolve result
 
       return def.promise
 
