@@ -20,8 +20,6 @@ angular.module "angularFirechat"
 
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
         .then (userData) ->
-          console.log 'Sukses euy! Alhamdulilaah....'
-          console.log userData
           resetRegisterModel()
           AlertService.showRegisterUserSuccessMessage()
         .catch ->
@@ -32,8 +30,6 @@ angular.module "angularFirechat"
         .then (authData) ->
           updateCurrentUser(authData)
           resetLoginModel()
-          console.log 'Ya ampuun...sukses lagi! Puji Tuhan Alhamdulilaah halleluya!'
-          console.log authData
           AlertService.showLoginSuccessMessage()
         .catch (error) ->
           AlertService.showLoginErrorMessage error.code
