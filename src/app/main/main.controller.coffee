@@ -14,10 +14,6 @@ angular.module "angularFirechat"
     $scope.currentUser = "No user login"
 
     $scope.registerUser = ->
-      regData =
-        email: $scope.register.email
-        password: $scope.register.password
-
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
         .then (userData) ->
           resetRegisterModel()
