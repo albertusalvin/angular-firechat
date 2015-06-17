@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, toastr, FirebaseFactory, GlobalSetting) ->
+  .controller "MainCtrl", ($scope, toastr, FirebaseFactory, AlertService, GlobalSetting) ->
 
     $scope.login =
       email: null

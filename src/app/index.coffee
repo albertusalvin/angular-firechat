@@ -11,7 +11,8 @@ angular.module 'angularFirechat', [
     'ui.bootstrap',
     'toastr',
     'firebaseFactory',
-    'localstorageService'
+    'localstorageService',
+    'alertService'
   ]
   .config ($routeProvider) ->
     $routeProvider
