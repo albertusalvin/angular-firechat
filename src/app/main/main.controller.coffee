@@ -9,7 +9,7 @@ angular.module "angularFirechat"
       email: null
       password: null
       confirmPassword: null
-      username: null
+      username: null  # This attribute is currently unused
 
     $scope.currentUser = "No user login"
 

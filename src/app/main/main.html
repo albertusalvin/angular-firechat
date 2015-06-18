@@ -87,11 +87,10 @@
           data-ng-class="{ 'has-error': formRegister.registerUsername.$dirty && formRegister.registerUsername.$invalid }">
           <label for="register-username">
             Pick a username
-            <span class="text-danger" data-ng-show="formRegister.registerUsername.$dirty && formRegister.registerUsername.$invalid"> required </span>
           </label>
           <input type="text" class="form-control"
             id="register-username" name="registerUsername"
-            data-ng-model="register.username" required>
+            data-ng-model="register.username">
         </div>
 
         <div class="form-group">
