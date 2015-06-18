@@ -11,6 +11,7 @@ angular.module 'angularFirechat', [
     'ui.bootstrap',
     'toastr',
     'firebaseFactory',
+    'firechatFactory',
     'localstorageService',
     'alertService'
   ]
