@@ -16,19 +16,19 @@ angular.module "angularFirechat"
     $scope.registerUser = ->
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
         .then (userData) ->
-          FirebaseFactory.recordNewFirechatUser userData.uid, $scope.register.email, $scope.register.username
-            .then ->
-              resetRegisterModel()
-              AlertService.showRegisterSuccessMessage()
+          resetRegisterModel()
+          AlertService.showRegisterSuccessMessage()
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
     $scope.loginUser = ->
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
         .then (authData) ->
-          updateCurrentUser(authData)
-          resetLoginModel()
-          AlertService.showLoginSuccessMessage()
+          FirebaseFactory.storeUserData authData
+            .then ->
+              updateCurrentUser(authData)
+              resetLoginModel()
+              AlertService.showLoginSuccessMessage()
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
@@ -51,4 +51,3 @@ angular.module "angularFirechat"
         password: null
 
     FirebaseFactory.initiateFirebase()
-
