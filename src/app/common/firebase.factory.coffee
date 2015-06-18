@@ -9,31 +9,19 @@ angular.module "firebaseFactory", []
 
     FirebaseFactory.createUser = (email, password) ->
       def = $q.defer()
-
-      if firebaseRef
-        regData =
-          'email': email
-          'password': password
-
-        createUser def, regData
-      else
-        rejectFirebaseNotInitialized def
-
+      
+      if firebaseRef then createUser def, email, password 
+      else rejectFirebaseNotInitialized def
+      
       return def.promise
 
     FirebaseFactory.loginUser = (email, password) ->
       def = $q.defer()
 
-      if firebaseRef
-        loginData =
-          'email': email
-          'password': password
+      if firebaseRef then loginUser def, email, password
+      else rejectFirebaseNotInitialized def
 
-        loginUser def, loginData
-      else
-        rejectFirebaseNotInitialized def
-
-      def.promise
+      return def.promise
 
     FirebaseFactory.recordNewFirechatUser = (uid, email, username) ->
       def = $q.defer()
@@ -76,15 +64,22 @@ angular.module "firebaseFactory", []
       return def.promise
 
       return def.promise
+    createUser = (deferred, email, password) ->
+      regData =
+        'email': email
+        'password': password
 
-    createUser = (deferred, regData) ->
       firebaseRef.createUser regData, (error, userData) ->
         if error
           deferred.reject error
         else
           deferred.resolve userData
 
-    loginUser = (deferred, loginData) ->
+    loginUser = (deferred, email, password) ->
+      loginData =
+        'email': email
+        'password': password
+
       firebaseRef.authWithPassword loginData, (error, authData) ->
         if error
           deferred.reject error
