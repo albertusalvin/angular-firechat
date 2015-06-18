@@ -53,16 +53,19 @@ angular.module "firebaseFactory", []
 
     FirebaseFactory.getFirechatUserByUid = (uid) ->
       def = $q.defer()
-      result = null
+      result =
+        'key': null
+        'value': null
 
       tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
       tableFirechatUsers
         .orderByChild 'uid'
         .startAt uid
         .endAt uid
-        .on 'value', (snapshot) ->          
+        .on 'value', (snapshot) ->
           for key, value of snapshot.val()
-            result = value
+            result.key = key
+            result.value = value
           def.resolve result
 
       return def.promise
