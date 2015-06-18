@@ -23,22 +23,29 @@ angular.module "firebaseFactory", []
 
       return def.promise
 
-    FirebaseFactory.recordNewFirechatUser = (uid, email, username) ->
+    FirebaseFactory.storeUserData = (authData) ->
       def = $q.defer()
-      
+
       if firebaseRef
-        newUser =
-          'uid': uid
-          'email': email
-          'username': username
-        
-        firebaseRef
-          .child GlobalSetting.tableNameFirechatUsers
-          .push newUser, -> def.resolve()
-      else
-        rejectFirebaseNotInitialized def
+        getFirechatUserByUid authData.uid
+          .then (user) ->
+            if user is 0 then storeUserData def, authData
+            else def.resolve()
+          .catch (error) -> def.reject error
+      else rejectFirebaseNotInitialized def
 
       return def.promise
+
+    storeUserData = (deferred, authData) ->
+      newUser =
+        'provider': authData.provider
+        'email': authData[authData.provider].email
+
+      firebaseRef
+        .child(GlobalSetting.tableNameFirechatUsers).child(authData.uid)
+        .set newUser, (error) ->
+          if error then deferred.reject error
+          else deferred.resolve()
 
     getFirechatUserByUid = (uid) ->
       def = $q.defer()
