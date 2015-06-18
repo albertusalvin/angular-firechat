@@ -4,20 +4,13 @@ angular.module "alertService", []
     this.showRegisterSuccessMessage = ->
       toastr.success 'Successfully created user account!', 'Success'
 
-    this.showRegisterErrorMessage = ->
-      toastr.error 'Error creating user:', 'Error'
-
     this.showLoginSuccessMessage = ->
       toastr.success 'Hell yeah, login success!'
 
-    this.showLoginErrorMessage = (errorCode) ->
-      if errorCode is 'INVALID_EMAIL'
-        toastr.error 'Invalid email. Must follow format: john@example.com', 'Login Failed'
-      else if errorCode is 'INVALID_USER'
-        toastr.error 'No user with that email was found', 'Login Failed'
-      else if errorCode is 'INVALID_PASSWORD'
-        toastr.error 'Wrong password', 'Login Failed'
+    this.showErrorMessage = (errorMesssage, errorTitle) ->
+      if errorMesssage and errorTitle
+        toastr.error errorMesssage, errorTitle.replace(/_/g, ' ')
       else
-        toastr.error 'Login Failed'
+        toastr.error 'Unknown error', 'ERROR'
 
     return this

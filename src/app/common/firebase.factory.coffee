@@ -92,6 +92,6 @@ angular.module "firebaseFactory", []
           deferred.resolve authData
 
     rejectFirebaseNotInitialized = (deferred) ->
-      deferred.reject 'Firebase is not initialized'
+      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
 
     return FirebaseFactory

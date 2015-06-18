@@ -20,8 +20,8 @@ angular.module "angularFirechat"
             .then ->
               resetRegisterModel()
               AlertService.showRegisterSuccessMessage()
-        .catch ->
-          AlertService.showRegisterErrorMessage()
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.code
 
     $scope.loginUser = ->
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
@@ -30,7 +30,7 @@ angular.module "angularFirechat"
           resetLoginModel()
           AlertService.showLoginSuccessMessage()
         .catch (error) ->
-          AlertService.showLoginErrorMessage error.code
+          AlertService.showErrorMessage error.message, error.code
 
     $scope.createNewRoom = ->
       # Under Construction
