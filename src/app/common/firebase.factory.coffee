@@ -40,24 +40,18 @@ angular.module "firebaseFactory", []
 
       return def.promise
 
-    FirebaseFactory.getFirechatUserByUid = (uid) ->
+    getFirechatUserByUid = (uid) ->
       def = $q.defer()
 
       if firebaseRef
-        result =
-          'key': null
-          'value': null
-
-        tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
-        tableFirechatUsers
-          .orderByChild 'uid'
-          .startAt uid
-          .endAt uid
+        firebaseRef
+          .child GlobalSetting.tableNameFirechatUsers
+          .orderByKey().startAt(uid).endAt(uid)
           .on 'value', (snapshot) ->
-            for key, value of snapshot.val()
-              result.key = key
-              result.value = value
-            def.resolve result
+            if snapshot.numChildren() is 1
+              def.resolve snapshot.val()
+            else 
+              def.resolve 0
       else
         rejectFirebaseNotInitialized def
 
