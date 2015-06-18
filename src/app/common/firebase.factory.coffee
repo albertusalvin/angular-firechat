@@ -36,35 +36,6 @@ angular.module "firebaseFactory", []
 
       return def.promise
 
-    storeUserData = (deferred, authData) ->
-      newUser =
-        'provider': authData.provider
-        'email': authData[authData.provider].email
-
-      firebaseRef
-        .child(GlobalSetting.tableNameFirechatUsers).child(authData.uid)
-        .set newUser, (error) ->
-          if error then deferred.reject error
-          else deferred.resolve()
-
-    getFirechatUserByUid = (uid) ->
-      def = $q.defer()
-
-      if firebaseRef
-        firebaseRef
-          .child GlobalSetting.tableNameFirechatUsers
-          .orderByKey().startAt(uid).endAt(uid)
-          .on 'value', (snapshot) ->
-            if snapshot.numChildren() is 1
-              def.resolve snapshot.val()
-            else 
-              def.resolve 0
-      else
-        rejectFirebaseNotInitialized def
-
-      return def.promise
-
-      return def.promise
     createUser = (deferred, email, password) ->
       regData =
         'email': email
@@ -87,7 +58,35 @@ angular.module "firebaseFactory", []
         else
           deferred.resolve authData
 
+    storeUserData = (deferred, authData) ->
+      newUser =
+        'provider': authData.provider
+        'email': authData[authData.provider].email
+
+      firebaseRef
+        .child(GlobalSetting.tableNameFirechatUsers).child(authData.uid)
+        .set newUser, (error) ->
+          if error then deferred.reject error
+          else deferred.resolve()
+
     rejectFirebaseNotInitialized = (deferred) ->
       deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
+
+    getFirechatUserByUid = (uid) ->
+      def = $q.defer()
+
+      if firebaseRef
+        firebaseRef
+          .child GlobalSetting.tableNameFirechatUsers
+          .orderByKey().startAt(uid).endAt(uid)
+          .on 'value', (snapshot) ->
+            if snapshot.numChildren() is 1
+              def.resolve snapshot.val()
+            else 
+              def.resolve 0
+      else
+        rejectFirebaseNotInitialized def
+
+      return def.promise
 
     return FirebaseFactory
