@@ -17,7 +17,7 @@ angular.module "firebaseFactory", []
 
         createUser def, regData
       else
-        def.reject 'Firebase is not initialized'
+        rejectFirebaseNotInitialized def
 
       return def.promise
 
@@ -31,7 +31,7 @@ angular.module "firebaseFactory", []
 
         loginUser def, loginData
       else
-        def.reject 'Firebase is not initialized'
+        rejectFirebaseNotInitialized def
 
       def.promise
 
@@ -44,29 +44,36 @@ angular.module "firebaseFactory", []
           'email': email
           'username': username
         
-        tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
-        tableFirechatUsers.push newUser, -> def.resolve()
+        firebaseRef
+          .child GlobalSetting.tableNameFirechatUsers
+          .push newUser, -> def.resolve()
       else
-        def.reject 'Firebase is not initialized'
+        rejectFirebaseNotInitialized def
 
       return def.promise
 
     FirebaseFactory.getFirechatUserByUid = (uid) ->
       def = $q.defer()
-      result =
-        'key': null
-        'value': null
 
-      tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
-      tableFirechatUsers
-        .orderByChild 'uid'
-        .startAt uid
-        .endAt uid
-        .on 'value', (snapshot) ->
-          for key, value of snapshot.val()
-            result.key = key
-            result.value = value
-          def.resolve result
+      if firebaseRef
+        result =
+          'key': null
+          'value': null
+
+        tableFirechatUsers = firebaseRef.child GlobalSetting.tableNameFirechatUsers
+        tableFirechatUsers
+          .orderByChild 'uid'
+          .startAt uid
+          .endAt uid
+          .on 'value', (snapshot) ->
+            for key, value of snapshot.val()
+              result.key = key
+              result.value = value
+            def.resolve result
+      else
+        rejectFirebaseNotInitialized def
+
+      return def.promise
 
       return def.promise
 
@@ -83,5 +90,8 @@ angular.module "firebaseFactory", []
           deferred.reject error
         else
           deferred.resolve authData
+
+    rejectFirebaseNotInitialized = (deferred) ->
+      deferred.reject 'Firebase is not initialized'
 
     return FirebaseFactory
