@@ -1,6 +1,7 @@
 setting =
   firebaseAppUrl: "https://sweltering-inferno-4271.firebaseio.com"
   tableNameFirechatUsers: "firechatUsers"
+  tableNameFirechat: "firechat"
 
 angular.module 'angularFirechat', [
     'ngAnimate',
@@ -11,6 +12,7 @@ angular.module 'angularFirechat', [
     'ui.bootstrap',
     'toastr',
     'firebaseFactory',
+    'firechatFactory',
     'localstorageService',
     'alertService'
   ]

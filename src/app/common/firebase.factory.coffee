@@ -4,8 +4,8 @@ angular.module "firebaseFactory", []
     FirebaseFactory = {}
     firebaseRef = null
 
-    FirebaseFactory.initiateFirebase = ->
-      firebaseRef = new Firebase(GlobalSetting.firebaseAppUrl)
+    FirebaseFactory.initialize = ->
+      initializeFirebase()
 
     FirebaseFactory.createUser = (email, password) ->
       def = $q.defer()
@@ -35,6 +35,9 @@ angular.module "firebaseFactory", []
       else rejectFirebaseNotInitialized def
 
       return def.promise
+
+    initializeFirebase = ->
+      firebaseRef = new Firebase GlobalSetting.firebaseAppUrl
 
     createUser = (deferred, email, password) ->
       regData =
@@ -69,9 +72,6 @@ angular.module "firebaseFactory", []
           if error then deferred.reject error
           else deferred.resolve()
 
-    rejectFirebaseNotInitialized = (deferred) ->
-      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
-
     getFirechatUserByUid = (uid) ->
       def = $q.defer()
 
@@ -88,5 +88,8 @@ angular.module "firebaseFactory", []
         rejectFirebaseNotInitialized def
 
       return def.promise
+
+    rejectFirebaseNotInitialized = (deferred) ->
+      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
 
     return FirebaseFactory

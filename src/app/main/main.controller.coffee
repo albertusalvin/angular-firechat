@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, toastr, FirebaseFactory, AlertService, GlobalSetting) ->
+  .controller "MainCtrl", ($scope, toastr, FirebaseFactory, FirechatFactory, AlertService, GlobalSetting) ->
 
     $scope.login =
       email: null
@@ -26,6 +26,11 @@ angular.module "angularFirechat"
         .then (authData) ->
           FirebaseFactory.storeUserData authData
             .then ->
+              FirechatFactory.setUser authData.uid, authData[authData.provider].email.replace(/@.*/, '')
+                .then (user) ->
+                  console.log 'user data'
+                  console.log user 
+
               updateCurrentUser(authData)
               resetLoginModel()
               AlertService.showLoginSuccessMessage()
@@ -36,7 +41,7 @@ angular.module "angularFirechat"
       # Under Construction
 
     updateCurrentUser = (authData) ->
-      $scope.currentUser = authData[authData.provider].email
+      $scope.currentUser = authData[authData.provider].email.replace(/@.*/, '')
 
     resetRegisterModel = ->
       $scope.register =
@@ -50,4 +55,6 @@ angular.module "angularFirechat"
         email: null
         password: null
 
-    FirebaseFactory.initiateFirebase()
+    FirebaseFactory.initialize()
+    FirechatFactory.initialize()
+
