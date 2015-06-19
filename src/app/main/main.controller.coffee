@@ -23,13 +23,12 @@ angular.module "angularFirechat"
 
     $scope.loginUser = ->
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
+        .then FirebaseFactory.storeUserData
         .then (authData) ->
-          FirebaseFactory.storeUserData authData
-            .then ->
-              FirechatFactory.setUser authData.uid, authData[authData.provider].email.replace(/@.*/, '')
-                .then (user) ->
-                  console.log 'user data'
-                  console.log user 
+          FirechatFactory.setUser authData.uid, authData[authData.provider].email.replace(/@.*/, '')
+            .then (user) ->
+              console.log 'user data'
+              console.log user
 
               updateCurrentUser(authData)
               resetLoginModel()

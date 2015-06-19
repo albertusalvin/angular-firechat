@@ -30,7 +30,7 @@ angular.module "firebaseFactory", []
         getFirechatUserByUid authData.uid
           .then (user) ->
             if user is 0 then storeUserData def, authData
-            else def.resolve()
+            else def.resolve authData
           .catch (error) -> def.reject error
       else rejectFirebaseNotInitialized def
 
@@ -70,7 +70,7 @@ angular.module "firebaseFactory", []
         .child(GlobalSetting.tableNameFirechatUsers).child(authData.uid)
         .set newUser, (error) ->
           if error then deferred.reject error
-          else deferred.resolve()
+          else deferred.resolve authData
 
     getFirechatUserByUid = (uid) ->
       def = $q.defer()
