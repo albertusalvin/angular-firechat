@@ -11,6 +11,11 @@ angular.module "angularFirechat"
       confirmPassword: null
       username: null  # This attribute is currently unused
 
+    $scope.newRoom =
+      name: null
+      type: 'public'
+      typeOptions: ['public', 'private']
+
     $scope.currentUser = "No user login"
 
     $scope.registerUser = ->
@@ -36,8 +41,11 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
-    $scope.createNewRoom = ->
-      # Under Construction
+    $scope.createRoom = ->
+      FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
+        .then (roomId) ->
+          console.log 'room generated'
+          console.log roomId
 
     updateCurrentUser = (authData) ->
       $scope.currentUser = authData[authData.provider].email.replace(/@.*/, '')
