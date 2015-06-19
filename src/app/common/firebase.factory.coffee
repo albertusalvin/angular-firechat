@@ -72,9 +72,6 @@ angular.module "firebaseFactory", []
           if error then deferred.reject error
           else deferred.resolve()
 
-    rejectFirebaseNotInitialized = (deferred) ->
-      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
-
     getFirechatUserByUid = (uid) ->
       def = $q.defer()
 
@@ -91,5 +88,8 @@ angular.module "firebaseFactory", []
         rejectFirebaseNotInitialized def
 
       return def.promise
+
+    rejectFirebaseNotInitialized = (deferred) ->
+      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
 
     return FirebaseFactory
