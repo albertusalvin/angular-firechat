@@ -50,4 +50,4 @@ angular.module "angularFirechat"
         email: null
         password: null
 
-    FirebaseFactory.initiateFirebase()
+    FirebaseFactory.initialize()
