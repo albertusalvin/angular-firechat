@@ -11,24 +11,36 @@
 
         <div class="form-group"
           data-ng-class="{ 'has-error': formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid }">
-          <label for="login-email">
-            E-mail
-            <span class="text-danger" data-ng-show="formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid"> required </span>
-          </label>
-          <input type="email" class="form-control"
-            id="login-email" name="loginEmail"
-            data-ng-model="login.email" required>
+          <div class="row">
+            <div class="col-xs-3">
+              <label for="login-email">
+                E-mail
+                <span class="text-danger" data-ng-show="formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid"> required </span>
+              </label>              
+            </div>
+            <div class="col-xs-9">
+              <input type="email" class="form-control"
+                id="login-email" name="loginEmail"
+                data-ng-model="login.email" required>              
+            </div>
+          </div>
         </div>
 
         <div class="form-group"
           data-ng-class="{ 'has-error': formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid }">
-          <label for="login-password">
-            Password
-            <span class="text-danger" data-ng-show="formLogin.loginPassword.$dirty && formLogin.loginPassword.$invalid"> required </span>
-          </label>
-          <input type="password" class="form-control"
-            id="login-password" name="loginPassword"
-            data-ng-model="login.password" required>
+          <div class="row">
+            <div class="col-xs-3">
+              <label for="login-password">
+                Password
+                <span class="text-danger" data-ng-show="formLogin.loginPassword.$dirty && formLogin.loginPassword.$invalid"> required </span>
+              </label>              
+            </div>
+            <div class="col-xs-9">
+              <input type="password" class="form-control"
+                id="login-password" name="loginPassword"
+                data-ng-model="login.password" required>              
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
@@ -103,7 +115,7 @@
     </div>
   </div>
 
-  <div class="row" style="background-color: yellow;">
+  <div class="row" style="background-color: rgb(54, 54, 54); color: white; font-size: 1.4em;">
     <div class="col-xs-12">
       Current user: {{ currentUser }}
     </div>
