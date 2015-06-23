@@ -34,9 +34,13 @@ angular.module "angularFirechat"
       else
         $scope.user.name = user.name
 
-    initRooms = (rooms) ->
-      for id, room of rooms
-        $scope.rooms.push room
+    initRooms = ->
+      FirechatFactory.getRoomListByUser $scope.user.id
+        .then (rooms) ->
+          for id, room of rooms
+            $scope.rooms.push room
+        .catch (error) ->
+          throw error
 
     errorNoUserData = ->
       AlertService.showErrorMessage 'Unable to find user data', 'LOGIN ERROR'

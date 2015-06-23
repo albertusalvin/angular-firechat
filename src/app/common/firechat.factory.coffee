@@ -30,6 +30,17 @@ angular.module "firechatFactory", []
           firechatRef.createRoom roomName, roomType, (roomId) ->
             resolve roomId
 
+    FirechatFactory.getRoomListByUser = (userid) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized
+        else
+          firebaseRef
+            .child 'users'
+            .orderByKey().equalTo userid
+            .on 'value', (snapshot) ->
+              resolve snapshot.val()[userid].rooms
+
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
 
