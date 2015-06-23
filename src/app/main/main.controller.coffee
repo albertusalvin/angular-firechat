@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, toastr, FirebaseFactory, FirechatFactory, AlertService, GlobalSetting) ->
+  .controller "MainCtrl", ($scope, $location, FirebaseFactory, FirechatFactory, AlertService, LocalStorageService) ->
 
     $scope.login =
       email: null
@@ -10,13 +10,6 @@ angular.module "angularFirechat"
       password: null
       confirmPassword: null
       username: null  # This attribute is currently unused
-
-    $scope.newRoom =
-      name: null
-      type: 'public'
-      typeOptions: ['public', 'private']
-
-    $scope.currentUser = "No user login"
 
     $scope.registerUser = ->
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
@@ -29,26 +22,14 @@ angular.module "angularFirechat"
     $scope.loginUser = ->
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
         .then FirebaseFactory.storeUserData
-        .then (authData) ->
-          FirechatFactory.setUser authData.uid, authData[authData.provider].email.replace(/@.*/, '')
-            .then (user) ->
-              console.log 'user data'
-              console.log user
-
-              updateCurrentUser(authData)
-              resetLoginModel()
-              AlertService.showLoginSuccessMessage()
+        .then FirechatFactory.setUser
+        .then (user) ->
+          LocalStorageService.saveObject 'userdata', user
+          resetLoginModel()
+          AlertService.showLoginSuccessMessage()
+          $location.url '/listRooms'
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
-
-    $scope.createRoom = ->
-      FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
-        .then (roomId) ->
-          console.log 'room generated'
-          console.log roomId
-
-    updateCurrentUser = (authData) ->
-      $scope.currentUser = authData[authData.provider].email.replace(/@.*/, '')
 
     resetRegisterModel = ->
       $scope.register =
@@ -64,4 +45,5 @@ angular.module "angularFirechat"
 
     FirebaseFactory.initialize()
     FirechatFactory.initialize()
+
 

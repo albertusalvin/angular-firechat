@@ -2,22 +2,50 @@ angular.module "firechatFactory", []
   .factory "FirechatFactory", ($q, GlobalSetting) ->
 
     FirechatFactory = {}
+    FirechatFactory.isInitialized = false
+
     firebaseRef = null
     firechatRef = null
-
+    
     FirechatFactory.initialize = ->
       initializeFirebase()
       initializeFirechat()
+      FirechatFactory.isInitialized = true
 
-    FirechatFactory.setUser = (userid, username) ->
-      return $q (resolver, rejector) ->
-        if firechatRef then setUser resolver, userid, username
-        else rejectFirechatNotInitialized rejector
+    FirechatFactory.setUser = (authData) ->
+      uid = authData.uid
+      username = authData[authData.provider].email.replace(/@.*/, '')
 
-    FirechatFactory.createRoom = (roomname, roomtype) ->
-      return $q (resolver, rejector) ->
-        if firechatRef then createRoom resolver, roomname, roomtype
-        else rejectFirechatNotInitialized rejector
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized
+        else if (not uid) or (not username)
+          reject errorInvalidAuthData
+        else
+          firechatRef.setUser uid, username, (user) ->
+            resolve user
+
+    FirechatFactory.createRoom = (roomName, roomType) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized
+        else
+          firechatRef.createRoom roomName, roomType, (roomId) ->
+            resolve roomId
+
+    FirechatFactory.getRoomListByUser = (userid) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized
+        else
+          firebaseRef
+            .child 'users'
+            .orderByKey().equalTo userid
+            .on 'value', (snapshot) ->
+              resolve snapshot.val()[userid].rooms
+
+    FirechatFactory.bindToFirechat = (eventID, callback) ->
+      firechatRef.on eventID, callback
 
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
@@ -25,15 +53,12 @@ angular.module "firechatFactory", []
     initializeFirechat = ->
       firechatRef = new Firechat firebaseRef
 
-    setUser = (resolve, userid, username) ->
-      firechatRef.setUser userid, username, (user) ->
-        resolve user
+    errorFirechatNotInitialized = ->
+      return { code: 'FIRECHAT UNINITIALIZED', message: 'Firechat is uninitialized' }
 
-    createRoom = (resolve, roomName, roomType) ->
-      firechatRef.createRoom roomName, roomType, (roomId) ->
-        resolve roomId
+    errorInvalidAuthData = ->
+      return { code: 'INVALID AUTHDATA', message: 'Unexpected authdata format' }
 
-    rejectFirechatNotInitialized = (reject) ->
-      reject { code: 'FIRECHAT UNINITIALIZED', message: 'Firechat is uninitialized' }
+
 
     return FirechatFactory
