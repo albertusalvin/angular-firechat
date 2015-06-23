@@ -44,6 +44,9 @@ angular.module "firechatFactory", []
             .on 'value', (snapshot) ->
               resolve snapshot.val()[userid].rooms
 
+    FirechatFactory.bindToFirechat = (eventID, callback) ->
+      firechatRef.on eventID, callback
+
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
 

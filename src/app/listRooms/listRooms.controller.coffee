@@ -26,7 +26,7 @@ angular.module "angularFirechat"
       try
         checkFirechatFactory()
         initUser()
-        initRooms()
+        updateRooms()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -44,13 +44,16 @@ angular.module "angularFirechat"
         $scope.user.id = user.id
         $scope.user.name = user.name
 
-    initRooms = ->
+    updateRooms = ->
       FirechatFactory.getRoomListByUser $scope.user.id
         .then (rooms) ->
+          $scope.rooms = []
           for id, room of rooms
             $scope.rooms.push room
         .catch (error) ->
           throw error
 
     init()
+    FirechatFactory.bindToFirechat 'user-update', updateRooms
+
 
