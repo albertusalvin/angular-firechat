@@ -2,12 +2,15 @@ angular.module "firechatFactory", []
   .factory "FirechatFactory", ($q, GlobalSetting) ->
 
     FirechatFactory = {}
+    FirechatFactory.isInitialized = false
+
     firebaseRef = null
     firechatRef = null
-
+    
     FirechatFactory.initialize = ->
       initializeFirebase()
       initializeFirechat()
+      FirechatFactory.isInitialized = true
 
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
