@@ -13,4 +13,10 @@ angular.module "alertService", []
       else
         toastr.error 'Unknown error', 'ERROR'
 
+    this.showSuccessMessage = (successMessage, successTitle) ->
+      if successMessage and successTitle
+        toastr.success successMessage, successTitle.replace(/_/g, ' ')
+      else
+        toastr.success 'Unknown success', 'SUCCESS'
+
     return this

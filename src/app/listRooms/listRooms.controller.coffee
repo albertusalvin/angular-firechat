@@ -15,8 +15,9 @@ angular.module "angularFirechat"
     $scope.createRoom = ->
       FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
         .then (roomId) ->
-          console.log 'room generated'
-          console.log roomId
+          AlertService.showSuccessMessage 'Room created!', 'SUCCESS'
+        .catch (error) ->
+          AlertService.showErrorMessage error, 'ERROR'
 
     $scope.enterRoom = (roomId) ->
       console.log 'Entering room ' + roomId
