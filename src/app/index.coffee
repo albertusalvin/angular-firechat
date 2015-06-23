@@ -2,6 +2,7 @@ setting =
   firebaseAppUrl: "https://sweltering-inferno-4271.firebaseio.com"
   tableNameFirechatUsers: "firechatUsers"
   tableNameFirechat: "firechat"
+  errMsgTimeout: 5000
 
 angular.module 'angularFirechat', [
     'ngAnimate',
@@ -14,7 +15,8 @@ angular.module 'angularFirechat', [
     'firebaseFactory',
     'firechatFactory',
     'localstorageService',
-    'alertService'
+    'alertService',
+    'commonService'
   ]
   .config ($routeProvider) ->
     $routeProvider
