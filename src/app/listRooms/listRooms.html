@@ -1,0 +1,9 @@
+<p>Current user: {{ user.name }}</p>
+
+<p>Rooms</p>
+<ul>
+  <li data-ng-repeat="room in rooms">
+    {{ room.name }}
+    <button type="button" data-ng-click="enterRoom(room.id)">Enter</button>
+  </li>
+</ul>

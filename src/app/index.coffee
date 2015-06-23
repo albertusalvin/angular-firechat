@@ -21,6 +21,9 @@ angular.module 'angularFirechat', [
       .when "/",
         templateUrl: "app/main/main.html"
         controller: "MainCtrl"
+      .when "/listRooms",
+        templateUrl: "app/listRooms/listRooms.html"
+        controller: "ListRoomsCtrl"
       .otherwise
         redirectTo: "/"
   .constant 'GlobalSetting', setting

@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, FirebaseFactory, FirechatFactory, AlertService, LocalStorageService) ->
+  .controller "MainCtrl", ($scope, $location, FirebaseFactory, FirechatFactory, AlertService, LocalStorageService) ->
 
     $scope.login =
       email: null
@@ -32,6 +32,7 @@ angular.module "angularFirechat"
           LocalStorageService.saveObject 'userdata', user
           resetLoginModel()
           AlertService.showLoginSuccessMessage()
+          $location.url '/listRooms'
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
