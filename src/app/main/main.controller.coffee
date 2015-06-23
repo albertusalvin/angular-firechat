@@ -30,7 +30,7 @@ angular.module "angularFirechat"
       FirebaseFactory.loginUser $scope.login.email, $scope.login.password
         .then FirebaseFactory.storeUserData
         .then (authData) ->
-          FirechatFactory.setUser authData.uid, authData[authData.provider].email.replace(/@.*/, '')
+          FirechatFactory.setUser authData
             .then (user) ->
               console.log 'user data'
               console.log user
