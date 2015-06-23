@@ -11,11 +11,6 @@ angular.module "angularFirechat"
       confirmPassword: null
       username: null  # This attribute is currently unused
 
-    $scope.newRoom =
-      name: null
-      type: 'public'
-      typeOptions: ['public', 'private']
-
     $scope.registerUser = ->
       FirebaseFactory.createUser $scope.register.email, $scope.register.password
         .then (userData) ->
@@ -35,12 +30,6 @@ angular.module "angularFirechat"
           $location.url '/listRooms'
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
-
-    $scope.createRoom = ->
-      FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
-        .then (roomId) ->
-          console.log 'room generated'
-          console.log roomId
 
     resetRegisterModel = ->
       $scope.register =

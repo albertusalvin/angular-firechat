@@ -1,10 +1,21 @@
 angular.module "angularFirechat"
-  .controller "ListRoomsCtrl", ($scope, LocalStorageService, AlertService) ->
+  .controller "ListRoomsCtrl", ($scope, FirechatFactory, LocalStorageService, AlertService) ->
 
     $scope.user =
       name: null
 
     $scope.rooms = []
+
+    $scope.newRoom =
+      name: null
+      type: 'public'
+      typeOptions: ['public', 'private']
+
+    $scope.createRoom = ->
+      FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
+        .then (roomId) ->
+          console.log 'room generated'
+          console.log roomId
 
     $scope.enterRoom = (roomId) ->
       console.log 'Entering room ' + roomId

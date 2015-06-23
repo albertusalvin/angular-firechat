@@ -1,9 +1,55 @@
-<p>Current user: {{ user.name }}</p>
+<div ng-include="'app/components/navbar/navbar.html'"></div>
 
-<p>Rooms</p>
-<ul>
-  <li data-ng-repeat="room in rooms">
-    {{ room.name }}
-    <button type="button" data-ng-click="enterRoom(room.id)">Enter</button>
-  </li>
-</ul>
+<div class="container-fluid" id="list-rooms-page-container">
+
+  <div class="row" id="row-user">
+    <div class="col-xs-12">
+      <p>Current user: {{ user.name }}</p>    
+    </div>  
+  </div>
+
+  <div class="row" id="row-create-room">
+    <div class="col-xs-12">
+      
+      <h3>Create Room</h3>
+
+      <form name="formCreateRoom" novalidate data-ng-submit="createRoom()">
+
+        <div class="form-group">
+          <label for="room-name">Room Name</label>
+          <input type="text" class="form-control"
+            id="room-name" name="roomName"
+            data-ng-model="newRoom.name" required>
+        </div>
+
+        <div class="form-group">
+          <label>Room Type</label>
+          <div class="radio" data-ng-repeat="option in newRoom.typeOptions">
+            <label>
+              <input type="radio" 
+                data-ng-model="newRoom.type" 
+                data-ng-value="option">
+              {{ option }}
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary"
+            data-ng-disabled="formCreateRoom.$invalid">
+            Create!
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>  
+
+  <p>Rooms</p>
+  <ul>
+    <li data-ng-repeat="room in rooms">
+      {{ room.name }}
+      <button type="button" data-ng-click="enterRoom(room.id)">Enter</button>
+    </li>
+  </ul>
+
+</div>
