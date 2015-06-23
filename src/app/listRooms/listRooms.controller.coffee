@@ -1,7 +1,8 @@
 angular.module "angularFirechat"
-  .controller "ListRoomsCtrl", ($scope, FirechatFactory, LocalStorageService, AlertService) ->
+  .controller "ListRoomsCtrl", ($scope, FirechatFactory, LocalStorageService, AlertService, CommonService) ->
 
     $scope.user =
+      id: null
       name: null
 
     $scope.rooms = []
@@ -21,17 +22,25 @@ angular.module "angularFirechat"
       console.log 'Entering room ' + roomId
 
     init = ->
+      try
+        checkFirechatFactory()
+        initUser()
+        initRooms()
+      catch err
+        AlertService.showErrorMessage err, 'ERROR'
+        CommonService.redirectToMainPage()
+
+    checkFirechatFactory = ->
+      throw 'Firechat is not initialized, now redirecting...' unless FirechatFactory.isInitialized
+
+    initUser = ->
       user = LocalStorageService.get 'userdata'
       if not user
-        errorNoUserData()
+        throw 'Unable to find user data'
+      else if (not user.id) or (not user.name)
+        throw 'User data invalid'
       else
-        initUser user
-        initRooms user.rooms if user.rooms
-
-    initUser = (user) ->
-      if not user.name
-        errorInvalidUserData()
-      else
+        $scope.user.id = user.id
         $scope.user.name = user.name
 
     initRooms = ->
@@ -42,10 +51,5 @@ angular.module "angularFirechat"
         .catch (error) ->
           throw error
 
-    errorNoUserData = ->
-      AlertService.showErrorMessage 'Unable to find user data', 'LOGIN ERROR'
-
-    errorInvalidUserData = ->
-      AlertService.showErrorMessage 'User data invalid', 'LOGIN ERROR'
-
     init()
+
