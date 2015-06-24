@@ -1,11 +1,9 @@
-<div ng-include="'app/components/navbar/navbar.html'"></div>
-
 <div class="container-fluid" id="list-rooms-page-container">
 
-  <div class="row" id="row-user">
+  <div class="row" id="row-top-navbar">
     <div class="col-xs-12">
-      <p>Current user: {{ user.name }}</p>    
-    </div>  
+      {{ user.name }}
+    </div>
   </div>
 
   <div class="row" id="row-create-room">
@@ -16,22 +14,32 @@
       <form name="formCreateRoom" novalidate data-ng-submit="createRoom()">
 
         <div class="form-group">
-          <label for="room-name">Room Name</label>
-          <input type="text" class="form-control"
-            id="room-name" name="roomName"
-            data-ng-model="newRoom.name"
-            data-ng-disabled="formCreateRoomDisabled" required>
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="room-name">Room Name</label>
+            </div>
+            <div class="col-xs-8">
+              <input type="text" class="form-control"
+                id="room-name" name="roomName"
+                data-ng-model="newRoom.name"
+                data-ng-disabled="formCreateRoomDisabled" required>
+            </div>
+          </div>
         </div>
 
         <div class="form-group">
-          <label>Room Type</label>
-          <div class="radio" data-ng-repeat="option in newRoom.typeOptions">
-            <label>
-              <input type="radio" 
-                data-ng-model="newRoom.type" 
-                data-ng-value="option">
-              {{ option }}
-            </label>
+          <div class="row">
+            <div class="col-xs-4">
+              <label>Room Type</label>    
+            </div>
+            <div class="col-xs-8">
+              <label class="radio-inline" data-ng-repeat="option in newRoom.typeOptions">
+                <input type="radio" 
+                  data-ng-model="newRoom.type" 
+                  data-ng-value="option">
+                {{ option }}
+              </label>
+            </div>
           </div>
         </div>
 
@@ -50,22 +58,27 @@
       
       <h3>Rooms</h3>
 
-      <ul>
-        <li data-ng-repeat="room in rooms">
+      <div class="row" data-ng-repeat="room in rooms">
+        <div class="col-xs-8">
           {{ room.name }}
-          <button type="button" data-ng-click="enterRoom(room.id, room.name)">Enter</button>
-        </li>
-      </ul>      
+        </div>
+        <div class="col-xs-4">
+          <button type="button" class="btn btn-sm btn-primary" 
+            data-ng-click="enterRoom(room.id, room.name)">
+            Enter
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="row" id="row-chat-room">
+  <div class="row" id="row-chat-room" data-ng-show="currentRoom.id">
     <div class="col-xs-12">
       
       <h3>Current Room: {{ currentRoom.name }}</h3>
 
       <p data-ng-repeat="message in currentRoom.messages">
-        {{ message.message }}
+        {{ message.name }} : {{ message.message }}
       </p>
     </div>
 
