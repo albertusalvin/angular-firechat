@@ -31,6 +31,7 @@ angular.module "angularFirechat"
         .then ->
           $scope.currentRoom.id = roomId
           $scope.currentRoom.name = roomName
+          getMessages roomId
         .catch (error) ->
           AlertService.showErrorMessage "Can't enter room", 'ERROR'
 
@@ -62,7 +63,20 @@ angular.module "angularFirechat"
         .catch (error) ->
           throw error
 
-    init()
+    getMessages = (roomId) ->
+      FirechatFactory.getMessages roomId
+        .then (messages) ->
+
+          $scope.currentRoom.messages = []
+          for id, msg of messages
+            msg.id = id
+            $scope.currentRoom.messages.push msg
+
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.done
+
+
+    init()  
     FirechatFactory.bindToFirechat 'user-update', updateRooms
 
 

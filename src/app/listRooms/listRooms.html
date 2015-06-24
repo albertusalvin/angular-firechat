@@ -63,6 +63,10 @@
     <div class="col-xs-12">
       
       <h3>Current Room: {{ currentRoom.name }}</h3>
+
+      <p data-ng-repeat="message in currentRoom.messages">
+        {{ message.message }}
+      </p>
     </div>
   </div>
 

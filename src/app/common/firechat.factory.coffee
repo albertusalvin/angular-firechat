@@ -55,6 +55,20 @@ angular.module "firechatFactory", []
           firechatRef.enterRoom roomId
           resolve()
 
+    FirechatFactory.getMessages = (roomId) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firebaseRef
+            .child 'room-messages'
+            .orderByKey().equalTo roomId
+            .on 'value', (snapshot) ->
+              if snapshot.val()
+                resolve snapshot.val()[roomId]
+              else
+                resolve()
+
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
 
