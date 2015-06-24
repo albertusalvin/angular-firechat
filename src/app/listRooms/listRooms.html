@@ -19,7 +19,8 @@
           <label for="room-name">Room Name</label>
           <input type="text" class="form-control"
             id="room-name" name="roomName"
-            data-ng-model="newRoom.name" required>
+            data-ng-model="newRoom.name"
+            data-ng-disabled="formCreateRoomDisabled" required>
         </div>
 
         <div class="form-group">
@@ -42,14 +43,52 @@
         </div>
       </form>
     </div>
-  </div>  
+  </div>
 
-  <p>Rooms</p>
-  <ul>
-    <li data-ng-repeat="room in rooms">
-      {{ room.name }}
-      <button type="button" data-ng-click="enterRoom(room.id)">Enter</button>
-    </li>
-  </ul>
+  <div class="row" id="row-list-rooms">
+    <div class="col-xs-12">
+      
+      <h3>Rooms</h3>
+
+      <ul>
+        <li data-ng-repeat="room in rooms">
+          {{ room.name }}
+          <button type="button" data-ng-click="enterRoom(room.id, room.name)">Enter</button>
+        </li>
+      </ul>      
+    </div>
+  </div>
+
+  <div class="row" id="row-chat-room">
+    <div class="col-xs-12">
+      
+      <h3>Current Room: {{ currentRoom.name }}</h3>
+
+      <p data-ng-repeat="message in currentRoom.messages">
+        {{ message.message }}
+      </p>
+    </div>
+
+    <div class="col-xs-12">
+      
+      <form name="formNewMessage" novalidate data-ng-submit="sendMessage()">
+        
+        <div class="form-group">
+          <label for="message-text">Message</label>
+          <input type="text" class="form-control"
+            id="message-text" name="messageText"
+            data-ng-model="newMessage.text"
+            data-ng-disabled="formNewMessageDisabled" required>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary"
+            data-ng-disabled="formNewMessage.$invalid">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
 </div>

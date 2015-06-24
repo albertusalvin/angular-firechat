@@ -2,7 +2,6 @@ angular.module "firechatFactory", []
   .factory "FirechatFactory", ($q, GlobalSetting) ->
 
     FirechatFactory = {}
-    FirechatFactory.isInitialized = false
 
     firebaseRef = null
     firechatRef = null
@@ -10,7 +9,9 @@ angular.module "firechatFactory", []
     FirechatFactory.initialize = ->
       initializeFirebase()
       initializeFirechat()
-      FirechatFactory.isInitialized = true
+
+    FirechatFactory.getUser = ->
+      return firechatRef._user
 
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
@@ -18,31 +19,65 @@ angular.module "firechatFactory", []
 
       return $q (resolve, reject) ->
         if not firechatRef
-          reject errorFirechatNotInitialized
+          reject errorFirechatNotInitialized()
         else if (not uid) or (not username)
-          reject errorInvalidAuthData
+          reject errorInvalidAuthData()
         else
           firechatRef.setUser uid, username, (user) ->
             resolve user
 
-    FirechatFactory.createRoom = (roomName, roomType) ->
-      return $q (resolve, reject) ->
-        if not firechatRef
-          reject errorFirechatNotInitialized
-        else
-          firechatRef.createRoom roomName, roomType, (roomId) ->
-            resolve roomId
-
     FirechatFactory.getRoomListByUser = (userid) ->
       return $q (resolve, reject) ->
         if not firechatRef
-          reject errorFirechatNotInitialized
+          reject errorFirechatNotInitialized()
         else
           firebaseRef
             .child 'users'
             .orderByKey().equalTo userid
             .on 'value', (snapshot) ->
               resolve snapshot.val()[userid].rooms
+
+    FirechatFactory.createRoom = (roomName, roomType) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firechatRef.createRoom roomName, roomType, (roomId) ->
+            resolve roomId
+
+    FirechatFactory.enterRoom = (roomId) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else if not roomId
+          reject errorInvalidRoomId()
+        else
+          firechatRef.enterRoom roomId
+          resolve()
+
+    FirechatFactory.getMessages = (roomId) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firebaseRef
+            .child 'room-messages'
+            .orderByKey().equalTo roomId
+            .on 'value', (snapshot) ->
+              if snapshot.val()
+                resolve snapshot.val()[roomId]
+              else
+                resolve()
+
+    FirechatFactory.sendMessage = (roomId, message, messageType = "default") ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else if (not roomId) or (not message)
+          reject errorInvalidMessage()
+        else
+          firechatRef.sendMessage roomId, message, messageType, (data) ->
+            resolve data
 
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
@@ -59,6 +94,10 @@ angular.module "firechatFactory", []
     errorInvalidAuthData = ->
       return { code: 'INVALID AUTHDATA', message: 'Unexpected authdata format' }
 
+    errorInvalidRoomId = ->
+      return { code: 'INVALID ROOM ID', message: 'Invalid room ID' }
 
+    errorInvalidMessage = ->
+      return { code: null, message: 'Invalid message' }
 
     return FirechatFactory

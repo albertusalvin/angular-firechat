@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "ListRoomsCtrl", ($scope, FirechatFactory, LocalStorageService, AlertService, CommonService) ->
+  .controller "ListRoomsCtrl", ($scope, FirechatFactory, AlertService, CommonService) ->
 
     $scope.user =
       id: null
@@ -12,6 +12,17 @@ angular.module "angularFirechat"
       type: 'public'
       typeOptions: ['public', 'private']
 
+    $scope.currentRoom =
+      id: null
+      name: null
+      messages: []
+
+    $scope.newMessage =
+      text: null
+
+    $scope.formCreateRoomDisabled = true
+    $scope.formNewMessageDisabled = true
+
     $scope.createRoom = ->
       FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
         .then (roomId) ->
@@ -19,23 +30,38 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage error, 'ERROR'
 
-    $scope.enterRoom = (roomId) ->
-      console.log 'Entering room ' + roomId
+    $scope.enterRoom = (roomId, roomName) ->
+      FirechatFactory.enterRoom roomId
+        .then ->
+          $scope.currentRoom.id = roomId
+          $scope.currentRoom.name = roomName
+          getMessages roomId
+        .catch (error) ->
+          AlertService.showErrorMessage "Can't enter room", 'ERROR'
+
+    $scope.sendMessage = ->
+      FirechatFactory.sendMessage $scope.currentRoom.id, $scope.newMessage.text
+        .then (data) ->
+          console.log 'Done sending message'
+          console.log data
+
+          getMessages $scope.currentRoom.id
+          $scope.newMessage.text = null
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.code
 
     init = ->
       try
-        checkFirechatFactory()
         initUser()
         updateRooms()
+        $scope.formCreateRoomDisabled = false
+        $scope.formNewMessageDisabled = false
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
 
-    checkFirechatFactory = ->
-      throw 'Firechat is not initialized, now redirecting...' unless FirechatFactory.isInitialized
-
     initUser = ->
-      user = LocalStorageService.get 'userdata'
+      user = FirechatFactory.getUser()
       if not user
         throw 'Unable to find user data'
       else if (not user.id) or (not user.name)
@@ -53,7 +79,19 @@ angular.module "angularFirechat"
         .catch (error) ->
           throw error
 
-    init()
+    getMessages = (roomId) ->
+      FirechatFactory.getMessages roomId
+        .then (messages) ->
+
+          $scope.currentRoom.messages = []
+          for id, msg of messages
+            msg.id = id
+            $scope.currentRoom.messages.push msg
+
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.done
+
+    init()  
     FirechatFactory.bindToFirechat 'user-update', updateRooms
 
 
