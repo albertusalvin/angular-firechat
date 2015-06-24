@@ -12,7 +12,7 @@ angular.module "firebaseFactory", []
       def = $q.defer()
       
       if firebaseRef then createUser def, email, password 
-      else rejectFirebaseNotInitialized def
+      else def.reject errorFirebaseNotInitialized()
       
       return def.promise
 
@@ -20,7 +20,7 @@ angular.module "firebaseFactory", []
       def = $q.defer()
 
       if firebaseRef then loginUser def, email, password
-      else rejectFirebaseNotInitialized def
+      else def.reject errorFirebaseNotInitialized()
 
       return def.promise
 
@@ -33,7 +33,7 @@ angular.module "firebaseFactory", []
             if user is 0 then storeUserData def, authData
             else def.resolve authData
           .catch (error) -> def.reject error
-      else rejectFirebaseNotInitialized def
+      else def.reject errorFirebaseNotInitialized()
 
       return def.promise
 
@@ -76,21 +76,18 @@ angular.module "firebaseFactory", []
     getFirechatUserByUid = (uid) ->
       def = $q.defer()
 
-      if firebaseRef
-        firebaseRef
-          .child GlobalSetting.tableNameFirechatUsers
-          .orderByKey().startAt(uid).endAt(uid)
-          .on 'value', (snapshot) ->
-            if snapshot.numChildren() is 1
-              def.resolve snapshot.val()
-            else 
-              def.resolve 0
-      else
-        rejectFirebaseNotInitialized def
+      firebaseRef
+        .child GlobalSetting.tableNameFirechatUsers
+        .orderByKey().startAt(uid).endAt(uid)
+        .on 'value', (snapshot) ->
+          if snapshot.numChildren() is 1
+            def.resolve snapshot.val()
+          else 
+            def.resolve 0
 
       return def.promise
 
-    rejectFirebaseNotInitialized = (deferred) ->
-      deferred.reject { code: 'FIREBASE UNINITIALIZED', message: 'Firebase is not initialized' }
+    errorFirebaseNotInitialized = ->
+      return { code: null, message: 'Firebase is not initialized' }
 
     return FirebaseFactory

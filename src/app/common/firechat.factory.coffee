@@ -89,13 +89,13 @@ angular.module "firechatFactory", []
       firechatRef = new Firechat firebaseRef
 
     errorFirechatNotInitialized = ->
-      return { code: 'FIRECHAT UNINITIALIZED', message: 'Firechat is uninitialized' }
+      return { code: null, message: 'Firechat is uninitialized' }
 
     errorInvalidAuthData = ->
-      return { code: 'INVALID AUTHDATA', message: 'Unexpected authdata format' }
+      return { code: null, message: 'Invalid authdata' }
 
     errorInvalidRoomId = ->
-      return { code: 'INVALID ROOM ID', message: 'Invalid room ID' }
+      return { code: null, message: 'Invalid room ID' }
 
     errorInvalidMessage = ->
       return { code: null, message: 'Invalid message' }
