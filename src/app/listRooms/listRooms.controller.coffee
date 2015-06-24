@@ -12,6 +12,8 @@ angular.module "angularFirechat"
       type: 'public'
       typeOptions: ['public', 'private']
 
+    $scope.formCreateRoomDisabled = true
+
     $scope.createRoom = ->
       FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
         .then (roomId) ->
@@ -26,6 +28,7 @@ angular.module "angularFirechat"
       try
         initUser()
         updateRooms()
+        $scope.formCreateRoomDisabled = false
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()

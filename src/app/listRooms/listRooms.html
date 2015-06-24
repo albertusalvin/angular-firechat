@@ -19,7 +19,8 @@
           <label for="room-name">Room Name</label>
           <input type="text" class="form-control"
             id="room-name" name="roomName"
-            data-ng-model="newRoom.name" required>
+            data-ng-model="newRoom.name"
+            data-ng-disabled="formCreateRoomDisabled" required>
         </div>
 
         <div class="form-group">
