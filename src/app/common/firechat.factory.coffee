@@ -19,9 +19,9 @@ angular.module "firechatFactory", []
 
       return $q (resolve, reject) ->
         if not firechatRef
-          reject errorFirechatNotInitialized
+          reject errorFirechatNotInitialized()
         else if (not uid) or (not username)
-          reject errorInvalidAuthData
+          reject errorInvalidAuthData()
         else
           firechatRef.setUser uid, username, (user) ->
             resolve user
@@ -29,7 +29,7 @@ angular.module "firechatFactory", []
     FirechatFactory.createRoom = (roomName, roomType) ->
       return $q (resolve, reject) ->
         if not firechatRef
-          reject errorFirechatNotInitialized
+          reject errorFirechatNotInitialized()
         else
           firechatRef.createRoom roomName, roomType, (roomId) ->
             resolve roomId
@@ -37,7 +37,7 @@ angular.module "firechatFactory", []
     FirechatFactory.getRoomListByUser = (userid) ->
       return $q (resolve, reject) ->
         if not firechatRef
-          reject errorFirechatNotInitialized
+          reject errorFirechatNotInitialized()
         else
           firebaseRef
             .child 'users'
