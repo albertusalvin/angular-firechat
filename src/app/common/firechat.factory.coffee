@@ -26,14 +26,6 @@ angular.module "firechatFactory", []
           firechatRef.setUser uid, username, (user) ->
             resolve user
 
-    FirechatFactory.createRoom = (roomName, roomType) ->
-      return $q (resolve, reject) ->
-        if not firechatRef
-          reject errorFirechatNotInitialized()
-        else
-          firechatRef.createRoom roomName, roomType, (roomId) ->
-            resolve roomId
-
     FirechatFactory.getRoomListByUser = (userid) ->
       return $q (resolve, reject) ->
         if not firechatRef
@@ -44,6 +36,14 @@ angular.module "firechatFactory", []
             .orderByKey().equalTo userid
             .on 'value', (snapshot) ->
               resolve snapshot.val()[userid].rooms
+
+    FirechatFactory.createRoom = (roomName, roomType) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firechatRef.createRoom roomName, roomType, (roomId) ->
+            resolve roomId
 
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
