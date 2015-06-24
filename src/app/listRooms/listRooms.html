@@ -68,6 +68,27 @@
         {{ message.message }}
       </p>
     </div>
+
+    <div class="col-xs-12">
+      
+      <form name="formNewMessage" novalidate data-ng-submit="sendMessage()">
+        
+        <div class="form-group">
+          <label for="message-text">Message</label>
+          <input type="text" class="form-control"
+            id="message-text" name="messageText"
+            data-ng-model="newMessage.text"
+            data-ng-disabled="formNewMessageDisabled" required>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary"
+            data-ng-disabled="formNewMessage.$invalid">
+            Send
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
 </div>

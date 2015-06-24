@@ -69,6 +69,16 @@ angular.module "firechatFactory", []
               else
                 resolve()
 
+    FirechatFactory.sendMessage = (roomId, message, messageType = "default") ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else if (not roomId) or (not message)
+          reject errorInvalidMessage()
+        else
+          firechatRef.sendMessage roomId, message, messageType, (data) ->
+            resolve data
+
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
 
@@ -87,5 +97,7 @@ angular.module "firechatFactory", []
     errorInvalidRoomId = ->
       return { code: 'INVALID ROOM ID', message: 'Invalid room ID' }
 
+    errorInvalidMessage = ->
+      return { code: null, message: 'Invalid message' }
 
     return FirechatFactory

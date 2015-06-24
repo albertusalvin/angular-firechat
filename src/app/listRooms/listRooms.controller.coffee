@@ -17,7 +17,11 @@ angular.module "angularFirechat"
       name: null
       messages: []
 
+    $scope.newMessage =
+      text: null
+
     $scope.formCreateRoomDisabled = true
+    $scope.formNewMessageDisabled = true
 
     $scope.createRoom = ->
       FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
@@ -35,11 +39,23 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage "Can't enter room", 'ERROR'
 
+    $scope.sendMessage = ->
+      FirechatFactory.sendMessage $scope.currentRoom.id, $scope.newMessage.text
+        .then (data) ->
+          console.log 'Done sending message'
+          console.log data
+
+          getMessages $scope.currentRoom.id
+          $scope.newMessage.text = null
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.code
+
     init = ->
       try
         initUser()
         updateRooms()
         $scope.formCreateRoomDisabled = false
+        $scope.formNewMessageDisabled = false
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -74,7 +90,6 @@ angular.module "angularFirechat"
 
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.done
-
 
     init()  
     FirechatFactory.bindToFirechat 'user-update', updateRooms
