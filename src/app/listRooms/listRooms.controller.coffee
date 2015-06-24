@@ -12,6 +12,11 @@ angular.module "angularFirechat"
       type: 'public'
       typeOptions: ['public', 'private']
 
+    $scope.currentRoom =
+      id: null
+      name: null
+      messages: []
+
     $scope.formCreateRoomDisabled = true
 
     $scope.createRoom = ->
@@ -21,8 +26,13 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage error, 'ERROR'
 
-    $scope.enterRoom = (roomId) ->
-      console.log 'Entering room ' + roomId
+    $scope.enterRoom = (roomId, roomName) ->
+      FirechatFactory.enterRoom roomId
+        .then ->
+          $scope.currentRoom.id = roomId
+          $scope.currentRoom.name = roomName
+        .catch (error) ->
+          AlertService.showErrorMessage "Can't enter room", 'ERROR'
 
     init = ->
       try

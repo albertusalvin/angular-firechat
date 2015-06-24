@@ -45,6 +45,16 @@ angular.module "firechatFactory", []
           firechatRef.createRoom roomName, roomType, (roomId) ->
             resolve roomId
 
+    FirechatFactory.enterRoom = (roomId) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else if not roomId
+          reject errorInvalidRoomId()
+        else
+          firechatRef.enterRoom roomId
+          resolve()
+
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
 
@@ -60,6 +70,8 @@ angular.module "firechatFactory", []
     errorInvalidAuthData = ->
       return { code: 'INVALID AUTHDATA', message: 'Unexpected authdata format' }
 
+    errorInvalidRoomId = ->
+      return { code: 'INVALID ROOM ID', message: 'Invalid room ID' }
 
 
     return FirechatFactory

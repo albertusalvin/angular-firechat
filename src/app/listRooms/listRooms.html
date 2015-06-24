@@ -43,14 +43,27 @@
         </div>
       </form>
     </div>
-  </div>  
+  </div>
 
-  <p>Rooms</p>
-  <ul>
-    <li data-ng-repeat="room in rooms">
-      {{ room.name }}
-      <button type="button" data-ng-click="enterRoom(room.id)">Enter</button>
-    </li>
-  </ul>
+  <div class="row" id="row-list-rooms">
+    <div class="col-xs-12">
+      
+      <h3>Rooms</h3>
+
+      <ul>
+        <li data-ng-repeat="room in rooms">
+          {{ room.name }}
+          <button type="button" data-ng-click="enterRoom(room.id, room.name)">Enter</button>
+        </li>
+      </ul>      
+    </div>
+  </div>
+
+  <div class="row" id="row-chat-room">
+    <div class="col-xs-12">
+      
+      <h3>Current Room: {{ currentRoom.name }}</h3>
+    </div>
+  </div>
 
 </div>
