@@ -24,15 +24,11 @@ angular.module "angularFirechat"
 
     init = ->
       try
-        checkFirechatFactory()
         initUser()
         updateRooms()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
-
-    checkFirechatFactory = ->
-      throw 'Firechat is not initialized, now redirecting...' unless FirechatFactory.isInitialized
 
     initUser = ->
       user = FirechatFactory.getUser()
