@@ -12,6 +12,9 @@ angular.module "firechatFactory", []
       initializeFirechat()
       FirechatFactory.isInitialized = true
 
+    FirechatFactory.getUser = ->
+      return firechatRef._user
+
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
       username = authData[authData.provider].email.replace(/@.*/, '')

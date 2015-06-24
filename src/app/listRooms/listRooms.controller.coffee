@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "ListRoomsCtrl", ($scope, FirechatFactory, LocalStorageService, AlertService, CommonService) ->
+  .controller "ListRoomsCtrl", ($scope, FirechatFactory, AlertService, CommonService) ->
 
     $scope.user =
       id: null
@@ -35,7 +35,7 @@ angular.module "angularFirechat"
       throw 'Firechat is not initialized, now redirecting...' unless FirechatFactory.isInitialized
 
     initUser = ->
-      user = LocalStorageService.get 'userdata'
+      user = FirechatFactory.getUser()
       if not user
         throw 'Unable to find user data'
       else if (not user.id) or (not user.name)

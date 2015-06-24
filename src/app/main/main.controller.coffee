@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "MainCtrl", ($scope, $location, FirebaseFactory, FirechatFactory, AlertService, LocalStorageService) ->
+  .controller "MainCtrl", ($scope, $location, FirebaseFactory, FirechatFactory, AlertService) ->
 
     $scope.login =
       email: null
@@ -24,7 +24,6 @@ angular.module "angularFirechat"
         .then FirebaseFactory.storeUserData
         .then FirechatFactory.setUser
         .then (user) ->
-          LocalStorageService.saveObject 'userdata', user
           resetLoginModel()
           AlertService.showLoginSuccessMessage()
           $location.url '/listRooms'
