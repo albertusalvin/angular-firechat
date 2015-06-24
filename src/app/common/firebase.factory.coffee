@@ -2,13 +2,11 @@ angular.module "firebaseFactory", []
   .factory "FirebaseFactory", ($q, GlobalSetting) ->
 
     FirebaseFactory = {}
-    FirebaseFactory.isInitialized = false
 
     firebaseRef = null
 
     FirebaseFactory.initialize = ->
       initializeFirebase()
-      FirebaseFactory.isInitialized = true
 
     FirebaseFactory.createUser = (email, password) ->
       def = $q.defer()
