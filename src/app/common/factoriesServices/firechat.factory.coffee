@@ -14,9 +14,6 @@ angular.module "firechatFactory", []
       initializeFirebase()
       initializeFirechat()
 
-    FirechatFactory.getUser = ->
-      return firechatRef._user
-
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
       username = authData[authData.provider].email.replace(/@.*/, '')
@@ -84,6 +81,9 @@ angular.module "firechatFactory", []
 
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
+
+    FirechatFactory.getCurrentUser = ->
+      return firechatRef._user
 
     FirechatFactory.getCurrentRoom = ->
       return currentRoom
