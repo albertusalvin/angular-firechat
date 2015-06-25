@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "RoomCtrl", ($scope, FirechatFactory, AlertService) ->
+  .controller "RoomCtrl", ($scope, $location, FirechatFactory, AlertService, CommonService, UtilityService) ->
 
     $scope.currentRoom =
       id: null
@@ -17,14 +17,23 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
+    $scope.exitRoom = ->
+      $location.url '/listRooms'
+
     init = ->
-      initRoom()
-      getMessages $scope.currentRoom.id
+      try
+        initRoom()
+        getMessages $scope.currentRoom.id
+      catch err
+        AlertService.showErrorMessage err, 'ERROR'
+        CommonService.redirectToMainPage()
 
     initRoom = ->
       room = FirechatFactory.getCurrentRoom()
-      $scope.currentRoom.id = room.id
-      $scope.currentRoom.name = room.name
+      if room.id and room.name
+        $scope.currentRoom.id = room.id
+        $scope.currentRoom.name = room.name
+      else throw 'Invalid room'
 
     getMessages = (roomId) ->
       FirechatFactory.getMessages roomId
@@ -34,9 +43,11 @@ angular.module "angularFirechat"
           AlertService.showErrorMessage error.message, error.done
 
     updateMessages = (messages) ->
+      arr = UtilityService.convertObjectToArray messages, 'id'
+      sorted = UtilityService.sortByAttribute arr, 'timestamp'
       $scope.currentRoom.messages = []
-      for id, msg of messages
-        msg.id = id
+
+      for msg in sorted
         $scope.currentRoom.messages.push msg
 
     init()

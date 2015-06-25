@@ -1,16 +1,19 @@
+<topbar title="{{ currentRoom.name }}"></topbar>
+
 <div class="container-fluid" id="room-page-container">
 
-  <div class="row" id="row-chat-room">
+  <div class="row" id="row-messages">
     <div class="col-xs-12">
-
-      <h3>Current Room: {{ currentRoom.name }}</h3>
 
       <p data-ng-repeat="message in currentRoom.messages">
         {{ message.name }} : {{ message.message }}
       </p>
     </div>
+  </div>
+
+  <div class="row" id="row-form-message">
     <div class="col-xs-12">
-    
+
       <form name="formNewMessage" novalidate data-ng-submit="sendMessage()">
         
         <div class="form-group">
@@ -22,7 +25,7 @@
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-block btn-lg btn-primary"
+          <button type="submit" class="btn btn-block btn-lg btn-success"
             data-ng-disabled="formNewMessage.$invalid">
             Send
           </button>
@@ -30,5 +33,10 @@
       </form>
     </div>
   </div>
-  
+
+  <div class="row" id="row-btn-back">
+    <div class="col-xs-12">
+      <button type="button" class="btn btn-warning" data-ng-click="exitRoom()">Back</button>
+    </div>
+  </div>
 </div>
