@@ -16,7 +16,8 @@ angular.module 'angularFirechat', [
     'firechatFactory',
     'localstorageService',
     'alertService',
-    'commonService'
+    'commonService',
+    'utilityService'
   ]
   .config ($routeProvider) ->
     $routeProvider
