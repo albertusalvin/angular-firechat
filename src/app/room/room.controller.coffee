@@ -11,8 +11,8 @@ angular.module "angularFirechat"
 
     $scope.sendMessage = ->
       FirechatFactory.sendMessage $scope.currentRoom.id, $scope.newMessage.text
-        .then (data) ->
-          getMessages $scope.currentRoom.id
+        .then ->
+          updateMessages()
           $scope.newMessage.text = null
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
@@ -23,7 +23,7 @@ angular.module "angularFirechat"
     init = ->
       try
         initRoom()
-        getMessages $scope.currentRoom.id
+        updateMessages()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -35,14 +35,14 @@ angular.module "angularFirechat"
         $scope.currentRoom.name = room.name
       else throw 'Invalid room'
 
-    getMessages = (roomId) ->
-      FirechatFactory.getMessages roomId
+    updateMessages = ->
+      FirechatFactory.getMessages $scope.currentRoom.id
         .then (messages) ->
-          updateMessages messages
+          assignMessages messages
         .catch (error) ->
-          AlertService.showErrorMessage error.message, error.done
+          AlertService.showErrorMessage error.message, error.code          
 
-    updateMessages = (messages) ->
+    assignMessages = (messages) ->
       arr = UtilityService.convertObjectToArray messages, 'id'
       sorted = UtilityService.sortByAttribute arr, 'timestamp'
       $scope.currentRoom.messages = []
@@ -51,3 +51,5 @@ angular.module "angularFirechat"
         $scope.currentRoom.messages.push msg
 
     init()
+    FirechatFactory.bindToFirechat 'message-add', updateMessages
+    FirechatFactory.bindToFirechat 'message-remove', updateMessages
