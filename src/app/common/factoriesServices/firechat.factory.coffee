@@ -48,6 +48,14 @@ angular.module "firechatFactory", []
             .on 'value', (snapshot) ->
               resolve snapshot.val()[userid].rooms
 
+    FirechatFactory.getRoomMetadata = (roomId) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firechatRef.getRoom roomId, (metadata) ->
+            resolve metadata
+
     FirechatFactory.createRoom = (roomName, roomType) ->
       return $q (resolve, reject) ->
         if not firechatRef
