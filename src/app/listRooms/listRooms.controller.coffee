@@ -20,8 +20,7 @@ angular.module "angularFirechat"
     $scope.newMessage =
       text: null
 
-    $scope.formCreateRoomDisabled = true
-    $scope.formNewMessageDisabled = true
+    $scope.pageLoading = true
 
     $scope.createRoom = ->
       FirechatFactory.createRoom $scope.newRoom.name, $scope.newRoom.type
@@ -53,9 +52,8 @@ angular.module "angularFirechat"
     init = ->
       try
         initUser()
-        updateRooms()
-        $scope.formCreateRoomDisabled = false
-        $scope.formNewMessageDisabled = false
+        updateListRooms()
+        $scope.pageLoading = false
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -70,7 +68,7 @@ angular.module "angularFirechat"
         $scope.user.id = user.id
         $scope.user.name = user.name
 
-    updateRooms = ->
+    updateListRooms = ->
       FirechatFactory.getRoomListByUser $scope.user.id
         .then (rooms) ->
           $scope.rooms = []
@@ -92,6 +90,6 @@ angular.module "angularFirechat"
           AlertService.showErrorMessage error.message, error.done
 
     init()  
-    FirechatFactory.bindToFirechat 'user-update', updateRooms
+    FirechatFactory.bindToFirechat 'user-update', updateListRooms
 
 

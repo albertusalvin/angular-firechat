@@ -22,7 +22,7 @@
               <input type="text" class="form-control"
                 id="room-name" name="roomName"
                 data-ng-model="newRoom.name"
-                data-ng-disabled="formCreateRoomDisabled" required>
+                data-ng-disabled="pageLoading" required>
             </div>
           </div>
         </div>
@@ -91,7 +91,7 @@
           <input type="text" class="form-control"
             id="message-text" name="messageText"
             data-ng-model="newMessage.text"
-            data-ng-disabled="formNewMessageDisabled" required>
+            data-ng-disabled="pageLoading" required>
         </div>
 
         <div class="form-group">
