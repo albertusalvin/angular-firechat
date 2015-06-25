@@ -2,6 +2,20 @@
 
 <div class="container-fluid" id="room-page-container">
 
+  <div class="row" id="row-invite">
+    <div class="col-xs-12">
+      <label>Invite</label>
+      <div class="btn-group" dropdown is-open="status.isopen">
+        <button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+          Select user <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li data-ng-repeat="user in users"><a href="" data-ng-click="inviteUser(user.id)">{{ user.name }}</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div class="row" id="row-messages">
     <div class="col-xs-12">
 

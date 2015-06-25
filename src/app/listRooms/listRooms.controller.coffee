@@ -38,7 +38,7 @@ angular.module "angularFirechat"
         CommonService.redirectToMainPage()
 
     initUser = ->
-      user = FirechatFactory.getUser()
+      user = FirechatFactory.getCurrentUser()
       if not user
         throw 'Unable to find user data'
       else if (not user.id) or (not user.name)

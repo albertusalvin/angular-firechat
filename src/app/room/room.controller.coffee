@@ -9,6 +9,11 @@ angular.module "angularFirechat"
     $scope.newMessage =
       text: null
 
+    $scope.users = []
+
+    $scope.inviteUser = (userId) ->
+      FirechatFactory.inviteUser userId, $scope.currentRoom.id
+
     $scope.sendMessage = ->
       FirechatFactory.sendMessage $scope.currentRoom.id, $scope.newMessage.text
         .then ->
@@ -24,6 +29,7 @@ angular.module "angularFirechat"
       try
         initRoom()
         updateMessages()
+        getAllUsers()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -49,6 +55,11 @@ angular.module "angularFirechat"
 
       for msg in sorted
         $scope.currentRoom.messages.push msg
+
+    getAllUsers = ->
+      FirechatFactory.getAllUsers()
+        .then (data) ->
+          $scope.users = UtilityService.convertObjectToArray data
 
     init()
     FirechatFactory.bindToFirechat 'message-add', updateMessages

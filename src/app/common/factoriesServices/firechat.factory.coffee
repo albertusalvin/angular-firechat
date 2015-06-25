@@ -14,8 +14,15 @@ angular.module "firechatFactory", []
       initializeFirebase()
       initializeFirechat()
 
-    FirechatFactory.getUser = ->
-      return firechatRef._user
+    FirechatFactory.getAllUsers = ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firebaseRef
+            .child 'users'
+            .on 'value', (snapshot) ->
+              resolve snapshot.val()
 
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
@@ -58,6 +65,9 @@ angular.module "firechatFactory", []
           setCurrentRoom roomId, roomName
           resolve()
 
+    FirechatFactory.inviteUser = (userId, roomId) ->
+      firechatRef.inviteUser userId, roomId
+
     FirechatFactory.getMessages = (roomId) ->
       return $q (resolve, reject) ->
         if not firechatRef
@@ -84,6 +94,9 @@ angular.module "firechatFactory", []
 
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
+
+    FirechatFactory.getCurrentUser = ->
+      return firechatRef._user
 
     FirechatFactory.getCurrentRoom = ->
       return currentRoom
