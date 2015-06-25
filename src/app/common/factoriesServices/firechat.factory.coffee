@@ -65,6 +65,9 @@ angular.module "firechatFactory", []
           setCurrentRoom roomId, roomName
           resolve()
 
+    FirechatFactory.inviteUser = (userId, roomId) ->
+      firechatRef.inviteUser userId, roomId
+
     FirechatFactory.getMessages = (roomId) ->
       return $q (resolve, reject) ->
         if not firechatRef

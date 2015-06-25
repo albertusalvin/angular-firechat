@@ -10,7 +10,7 @@
           Select user <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu">
-          <li data-ng-repeat="user in users"><a href="">{{ user.name }}</a></li>
+          <li data-ng-repeat="user in users"><a href="" data-ng-click="inviteUser(user.id)">{{ user.name }}</a></li>
         </ul>
       </div>
     </div>
