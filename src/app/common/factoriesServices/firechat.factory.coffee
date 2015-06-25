@@ -14,6 +14,16 @@ angular.module "firechatFactory", []
       initializeFirebase()
       initializeFirechat()
 
+    FirechatFactory.getAllUsers = ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firebaseRef
+            .child 'users'
+            .on 'value', (snapshot) ->
+              resolve snapshot.val()
+
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
       username = authData[authData.provider].email.replace(/@.*/, '')
