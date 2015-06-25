@@ -5,6 +5,10 @@ angular.module "firechatFactory", []
 
     firebaseRef = null
     firechatRef = null
+
+    currentRoom =
+      id: null
+      name: null
     
     FirechatFactory.initialize = ->
       initializeFirebase()
@@ -45,7 +49,7 @@ angular.module "firechatFactory", []
           firechatRef.createRoom roomName, roomType, (roomId) ->
             resolve roomId
 
-    FirechatFactory.enterRoom = (roomId) ->
+    FirechatFactory.enterRoom = (roomId, roomName) ->
       return $q (resolve, reject) ->
         if not firechatRef
           reject errorFirechatNotInitialized()
@@ -53,6 +57,7 @@ angular.module "firechatFactory", []
           reject errorInvalidRoomId()
         else
           firechatRef.enterRoom roomId
+          setCurrentRoom roomId, roomName
           resolve()
 
     FirechatFactory.getMessages = (roomId) ->
@@ -81,6 +86,13 @@ angular.module "firechatFactory", []
 
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
+
+    FirechatFactory.getCurrentRoom = ->
+      return currentRoom
+
+    setCurrentRoom = (id, name) ->
+      currentRoom.id = id
+      currentRoom.name = name
 
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
