@@ -3,9 +3,15 @@ angular.module 'utilityService', []
 
     this.convertObjectToArray = (obj, keyAlias) ->
       arr = []
-      for key, value of obj
-        value[keyAlias] = key
-        arr.push value
+
+      if keyAlias
+        for key, value of obj
+          value[keyAlias] = key
+          arr.push value
+      else
+        for key, value of obj
+          arr.push value
+
       return arr
 
     this.sortByAttribute = (arr, attributeName) ->
