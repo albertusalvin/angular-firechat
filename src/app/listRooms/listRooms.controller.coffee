@@ -26,7 +26,7 @@ angular.module "angularFirechat"
         .then ->
           $location.url '/room'
         .catch (error) ->
-          AlertService.showErrorMessage "Can't enter room", 'ERROR'
+          AlertService.showErrorMessage error.message, error.code
 
     init = ->
       try

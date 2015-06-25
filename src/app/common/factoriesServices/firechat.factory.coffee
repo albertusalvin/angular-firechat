@@ -51,10 +51,8 @@ angular.module "firechatFactory", []
 
     FirechatFactory.enterRoom = (roomId, roomName) ->
       return $q (resolve, reject) ->
-        if not firechatRef
-          reject errorFirechatNotInitialized()
-        else if not roomId
-          reject errorInvalidRoomId()
+        if not firechatRef then reject errorFirechatNotInitialized()
+        else if (not roomId) or (not roomName) then reject errorInvalidRoomId()
         else
           firechatRef.enterRoom roomId
           setCurrentRoom roomId, roomName
