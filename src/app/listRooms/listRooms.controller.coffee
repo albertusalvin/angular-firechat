@@ -5,6 +5,8 @@ angular.module "angularFirechat"
       id: null
       name: null
 
+    $scope.invitations = []
+
     $scope.rooms = []
 
     $scope.newRoom =
@@ -32,6 +34,7 @@ angular.module "angularFirechat"
       try
         initUser()
         updateListRooms()
+        updateListInvitations()
         pageReady()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
@@ -53,6 +56,19 @@ angular.module "angularFirechat"
           $scope.rooms = UtilityService.convertObjectToArray rooms
         .catch (error) ->
           throw error
+
+    updateListInvitations = ->
+      FirechatFactory.getInvitations $scope.user.id
+        .then (invitations) ->
+
+          arrInvitations = UtilityService.convertObjectToArray invitations
+
+          FirechatFactory.addRoomMetadataToInvitations arrInvitations
+            .then (arr) ->
+              $scope.invitations = arr
+
+        .catch (error) ->
+          AlertService.showErrorMessage error.message, error.code
 
     pageReady = ->
       $scope.pageLoading = false

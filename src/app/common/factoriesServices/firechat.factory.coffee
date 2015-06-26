@@ -73,6 +73,19 @@ angular.module "firechatFactory", []
           setCurrentRoom roomId, roomName
           resolve()
 
+    FirechatFactory.getInvitations = (userid) ->
+      return $q (resolve, reject) ->
+        if not firechatRef
+          reject errorFirechatNotInitialized()
+        else
+          firebaseRef
+            .child 'users'
+            .orderByKey().equalTo userid
+            .on 'value', (snapshot) ->
+              invitations = snapshot.val()[userid]['invites']
+              if invitations then resolve invitations
+              else resolve()
+
     FirechatFactory.inviteUser = (userId, roomId) ->
       firechatRef.inviteUser userId, roomId
 
@@ -103,6 +116,13 @@ angular.module "firechatFactory", []
     FirechatFactory.bindToFirechat = (eventID, callback) ->
       firechatRef.on eventID, callback
 
+    FirechatFactory.addRoomMetadataToInvitations = (invitations) ->
+      return $q (resolve, reject) ->
+        res = []
+        for inv in invitations
+          getRoomMetaAndPushToArray inv, res
+        resolve res
+
     FirechatFactory.getCurrentUser = ->
       return firechatRef._user
 
@@ -112,6 +132,15 @@ angular.module "firechatFactory", []
     setCurrentRoom = (id, name) ->
       currentRoom.id = id
       currentRoom.name = name
+
+    getRoomMetaAndPushToArray = (inv, arr) ->
+      FirechatFactory.getRoomMetadata inv.roomId
+        .then (meta) ->
+          inv.roomName = meta.name
+          arr.push inv
+        .catch (error) ->
+          inv.roomName = '(Data unavailable)'
+          arr.push inv
 
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
