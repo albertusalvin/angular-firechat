@@ -58,12 +58,10 @@ angular.module "angularFirechat"
           throw error
 
     updateListInvitations = ->
-      FirechatFactory.getInvitations $scope.user.id
+      FirechatFactory.getUnansweredInvitations $scope.user.id
         .then (invitations) ->
 
-          arrInvitations = UtilityService.convertObjectToArray invitations
-
-          FirechatFactory.addRoomMetadataToInvitations arrInvitations
+          FirechatFactory.addRoomMetadataToInvitations invitations
             .then (arr) ->
               $scope.invitations = arr
 

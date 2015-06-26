@@ -1,5 +1,5 @@
 angular.module "firechatFactory", []
-  .factory "FirechatFactory", ($q, GlobalSetting) ->
+  .factory "FirechatFactory", ($q, GlobalSetting, UtilityService) ->
 
     FirechatFactory = {}
 
@@ -73,18 +73,16 @@ angular.module "firechatFactory", []
           setCurrentRoom roomId, roomName
           resolve()
 
-    FirechatFactory.getInvitations = (userid) ->
+    FirechatFactory.getUnansweredInvitations = (userid) ->
       return $q (resolve, reject) ->
         if not firechatRef
           reject errorFirechatNotInitialized()
         else
-          firebaseRef
-            .child 'users'
-            .orderByKey().equalTo userid
-            .on 'value', (snapshot) ->
-              invitations = snapshot.val()[userid]['invites']
-              if invitations then resolve invitations
-              else resolve()
+          getInvitations userid
+            .then (invites) ->
+              arrInvites = UtilityService.convertObjectToArray invites
+              unanswered = selectUnansweredInvitations arrInvites
+              resolve unanswered
 
     FirechatFactory.inviteUser = (userId, roomId) ->
       firechatRef.inviteUser userId, roomId
@@ -151,6 +149,22 @@ angular.module "firechatFactory", []
         .catch (error) ->
           inv.roomName = '(Data unavailable)'
           arr.push inv
+
+    getInvitations = (userid) ->
+      return $q (resolve, reject) ->
+        firebaseRef
+          .child 'users'
+          .orderByKey().equalTo userid
+          .on 'value', (snapshot) ->
+            invitations = snapshot.val()[userid]['invites']
+            if invitations then resolve invitations
+            else resolve()
+
+    selectUnansweredInvitations = (invitations) ->
+      unanswered = []
+      for i in invitations
+        unanswered.push i unless i.status
+      return unanswered
 
     initializeFirebase = ->
       firebaseRef = new Firebase GlobalSetting.firebaseAppUrl + '/' + GlobalSetting.tableNameFirechat
