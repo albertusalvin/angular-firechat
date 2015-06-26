@@ -30,6 +30,12 @@ angular.module "angularFirechat"
         .catch (error) ->
           AlertService.showErrorMessage error.message, error.code
 
+    $scope.acceptInvitation = (invitationId) ->
+      FirechatFactory.acceptInvitation invitationId
+
+    $scope.declineInvitation = (invitationId) ->
+      FirechatFactory.declineInvitation invitationId
+
     init = ->
       try
         initUser()
@@ -58,12 +64,10 @@ angular.module "angularFirechat"
           throw error
 
     updateListInvitations = ->
-      FirechatFactory.getInvitations $scope.user.id
+      FirechatFactory.getUnansweredInvitations $scope.user.id
         .then (invitations) ->
 
-          arrInvitations = UtilityService.convertObjectToArray invitations
-
-          FirechatFactory.addRoomMetadataToInvitations arrInvitations
+          FirechatFactory.addRoomMetadataToInvitations invitations
             .then (arr) ->
               $scope.invitations = arr
 
@@ -75,5 +79,6 @@ angular.module "angularFirechat"
 
     init()  
     FirechatFactory.bindToFirechat 'user-update', updateListRooms
+    FirechatFactory.bindToFirechat 'user-update', updateListInvitations
 
 

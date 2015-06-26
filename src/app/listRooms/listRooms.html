@@ -80,6 +80,14 @@
       <div class="invitation-container" data-ng-repeat="invitation in invitations track by invitation.id">
         <p>Sender: {{ invitation.fromUserName }}</p>
         <p>Room: {{ invitation.roomName }}</p>
+        <button type="button" class="btn btn-success"
+          data-ng-click="acceptInvitation(invitation.id)">
+          Accept
+        </button>
+        <button type="button" class="btn btn-danger"
+          data-ng-click="declineInvitation(invitation.id)">
+          Decline
+        </button>
       </div>
     </div>
   </div>
