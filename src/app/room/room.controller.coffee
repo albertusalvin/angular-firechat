@@ -13,6 +13,7 @@ angular.module "angularFirechat"
 
     $scope.inviteUser = (userId) ->
       FirechatFactory.inviteUser userId, $scope.currentRoom.id
+      AlertService.showSuccessMessage 'Invitation sent'
 
     $scope.sendMessage = ->
       FirechatFactory.sendMessage $scope.currentRoom.id, $scope.newMessage.text
