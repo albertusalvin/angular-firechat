@@ -1,5 +1,5 @@
 angular.module "angularFirechat"
-  .controller "ListRoomsCtrl", ($scope, $location, FirechatFactory, AlertService, CommonService) ->
+  .controller "ListRoomsCtrl", ($scope, $location, FirechatFactory, AlertService, CommonService, UtilityService) ->
 
     $scope.user =
       id: null
@@ -32,7 +32,7 @@ angular.module "angularFirechat"
       try
         initUser()
         updateListRooms()
-        $scope.pageLoading = false
+        pageReady()
       catch err
         AlertService.showErrorMessage err, 'ERROR'
         CommonService.redirectToMainPage()
@@ -50,11 +50,12 @@ angular.module "angularFirechat"
     updateListRooms = ->
       FirechatFactory.getRoomListByUser $scope.user.id
         .then (rooms) ->
-          $scope.rooms = []
-          for id, room of rooms
-            $scope.rooms.push room
+          $scope.rooms = UtilityService.convertObjectToArray rooms
         .catch (error) ->
           throw error
+
+    pageReady = ->
+      $scope.pageLoading = false
 
     init()  
     FirechatFactory.bindToFirechat 'user-update', updateListRooms
