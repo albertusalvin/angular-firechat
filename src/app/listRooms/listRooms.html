@@ -71,4 +71,16 @@
       </div>
     </div>
   </div>
+
+  <div class="row" id="row-list-invitations">
+    <div class="col-xs-12">
+      
+      <h3>Invitations</h3>
+
+      <div class="invitation-container" data-ng-repeat="invitation in invitations track by invitation.id">
+        <p>Sender: {{ invitation.fromUserName }}</p>
+        <p>Room: {{ invitation.roomName }}</p>
+      </div>
+    </div>
+  </div>
 </div>
