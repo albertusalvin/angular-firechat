@@ -1,33 +1,122 @@
-<div class="container">
+<div ng-include="'app/components/navbar/navbar.html'"></div>
 
-  <div ng-include="'app/components/navbar/navbar.html'"></div>
+<div class="container-fluid" id="main-page-container">
 
-  <div class="jumbotron text-center">
-    <h1>'Allo, 'Allo!</h1>
-    <p class="lead">
-      <img src="assets/images/yeoman.png" alt="I'm Yeoman"><br>
-      Always a pleasure scaffolding your apps.
-    </p>
-    <p><a class="btn btn-lg btn-success" ng-href="#">Splendid!</a></p>
-  </div>
+  <div class="row" id="row-login">
+    <div class="col-xs-12">
 
-  <div class="row">
-    <div class="col-sm-6 col-md-4" ng-repeat="awesomeThing in awesomeThings | orderBy:'rank'">
-      <div class="thumbnail">
-        <img class="pull-right" ng-src="assets/images/{{awesomeThing.logo}}" alt="{{awesomeThing.title}}">
-        <div class="caption">
-          <h3>{{awesomeThing.title}}</h3>
-          <p>{{awesomeThing.description}}</p>
-          <p><a ng-href="{{awesomeThing.url}}">{{awesomeThing.url}}</a></p>
+      <h1>Login</h1>
+
+      <form name="formLogin" novalidate data-ng-submit="loginUser()">
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid }">
+          <div class="row">
+            <div class="col-xs-3">
+              <label for="login-email">
+                E-mail
+                <span class="text-danger" data-ng-show="formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid"> required </span>
+              </label>              
+            </div>
+            <div class="col-xs-9">
+              <input type="email" class="form-control"
+                id="login-email" name="loginEmail"
+                data-ng-model="login.email" required>              
+            </div>
+          </div>
         </div>
-      </div>
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formLogin.loginEmail.$dirty && formLogin.loginEmail.$invalid }">
+          <div class="row">
+            <div class="col-xs-3">
+              <label for="login-password">
+                Password
+                <span class="text-danger" data-ng-show="formLogin.loginPassword.$dirty && formLogin.loginPassword.$invalid"> required </span>
+              </label>              
+            </div>
+            <div class="col-xs-9">
+              <input type="password" class="form-control"
+                id="login-password" name="loginPassword"
+                data-ng-model="login.password" required>              
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary"
+            data-ng-disabled="formLogin.$invalid">
+            Login
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <hr>
+  <div class="row" id="row-register">
+    <div class="col-xs-12">
+      
+      <p>Don't have an account yet? <strong>Register</strong> here.</p>
 
-  <div class="footer">
-    <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
+      <form name="formRegister" novalidate data-ng-submit="registerUser()">
+
+        <div class="form-group" 
+          data-ng-class="{ 'has-error': formRegister.registerEmail.$dirty && formRegister.registerEmail.$invalid }">
+          <label for="register-email">
+            E-mail
+            <span class="text-danger" data-ng-show="formRegister.registerEmail.$dirty && formRegister.registerEmail.$invalid"> required </span>
+          </label>
+          <input type="email" class="form-control" 
+            id="register-email" name="registerEmail" 
+            data-ng-model="register.email" required>
+        </div>
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formRegister.registerPassword.$dirty && formRegister.registerPassword.$invalid }">
+          <label for="register-password">
+            Password
+            <span class="text-danger" data-ng-show="formRegister.registerPassword.$dirty && formRegister.registerPassword.$invalid"> required </span>
+          </label>
+          <input type="password" class="form-control"
+            id="register-password" name="registerPassword"
+            data-ng-model="register.password" required>
+        </div>
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formRegister.registerConfirmPassword.$dirty && formRegister.registerConfirmPassword.$invalid }">
+          <label for="register-confirm-password">
+            Confirm Password
+            <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$dirty && formRegister.registerConfirmPassword.$invalid"> required </span>
+            <span class="text-danger" data-ng-show="formRegister.registerConfirmPassword.$valid && (register.password !== register.confirmPassword)"> must match password </span>
+            <span class="text-success" data-ng-show="formRegister.registerConfirmPassword.$valid && (register.password === register.confirmPassword)"> password match </span>
+          </label>
+          <input type="password" class="form-control"
+            id="register-confirm-password" name="registerConfirmPassword"
+            data-ng-model="register.confirmPassword" required>
+        </div>
+
+        <div class="form-group"
+          data-ng-class="{ 'has-error': formRegister.registerUsername.$dirty && formRegister.registerUsername.$invalid }">
+          <label for="register-username">
+            Pick a username
+          </label>
+          <input type="text" class="form-control"
+            id="register-username" name="registerUsername"
+            data-ng-model="register.username">
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary" 
+            data-ng-disabled="formRegister.$invalid || (register.password !== register.confirmPassword)">
+            Register
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
+</div>
 
+<div class="footer" id="bottom-footer">
+  <h4>This... is... FOOTER!!!</h4>
+  <p>With ♥ from <a href="https://twitter.com/Swiip">@Swiip</a></p>
 </div>

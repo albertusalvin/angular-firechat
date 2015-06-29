@@ -13,6 +13,78 @@
   }
 }
 
+
+
+
+
+#top-navbar {
+  margin-bottom: 0;
+}
+
+#bottom-footer {
+  border-top: 1px solid rgb(200, 200, 200);
+  padding-top: 3em;
+  padding-bottom: 3em;
+
+  background-color: rgb(54, 54, 54);
+  color: white;
+}
+
+#main-page-container {
+
+  #row-login {
+    padding-top: 1em;
+    padding-bottom: 1em;
+
+    background-color: rgb(218, 218, 218);
+  }
+
+  #row-register {
+    padding-top: 2em;
+    padding-bottom: 1em;
+  }
+}
+
+#list-rooms-page-container {
+
+  #row-top-navbar {
+    padding-top: .5em;
+    padding-bottom: .5em;
+
+    background-color: #222;
+    color: white;
+    font-size: 1.3em;
+  }
+
+  #row-create-room {
+    padding-bottom: 1em;
+
+    background-color: rgb(218, 218, 218);
+  }
+
+  #row-list-invitations {
+
+    .invitation-container {
+      margin-top: .5em;
+      margin-bottom: .5em;
+      padding: .5em;
+      
+      background-color: rgb(220, 227, 241);
+    }
+  }
+}
+
+#topbar-directive {
+  padding-top: .5em;
+  padding-bottom: .5em;
+
+  background-color: #222;
+  color: white;
+  font-size: 1.3em;
+}
+
+
+
 /* Do not remove this comments bellow. It's the markers used by gulp-inject to inject
    all your sass files automatically */
 // injector

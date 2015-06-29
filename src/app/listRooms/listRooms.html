@@ -1,0 +1,94 @@
+<div class="container-fluid" id="list-rooms-page-container">
+
+  <div class="row" id="row-top-navbar">
+    <div class="col-xs-12">
+      {{ user.name }}
+    </div>
+  </div>
+
+  <div class="row" id="row-create-room">
+    <div class="col-xs-12">
+      
+      <h3>Create Room</h3>
+
+      <form name="formCreateRoom" novalidate data-ng-submit="createRoom()">
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-xs-4">
+              <label for="room-name">Room Name</label>
+            </div>
+            <div class="col-xs-8">
+              <input type="text" class="form-control"
+                id="room-name" name="roomName"
+                data-ng-model="newRoom.name"
+                data-ng-disabled="pageLoading" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="row">
+            <div class="col-xs-4">
+              <label>Room Type</label>    
+            </div>
+            <div class="col-xs-8">
+              <label class="radio-inline" data-ng-repeat="option in newRoom.typeOptions">
+                <input type="radio" 
+                  data-ng-model="newRoom.type" 
+                  data-ng-value="option">
+                {{ option }}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-block btn-lg btn-primary"
+            data-ng-disabled="formCreateRoom.$invalid">
+            Create!
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="row" id="row-list-rooms">
+    <div class="col-xs-12">
+      
+      <h3>Rooms</h3>
+
+      <div class="row" data-ng-repeat="room in rooms">
+        <div class="col-xs-8">
+          {{ room.name }}
+        </div>
+        <div class="col-xs-4">
+          <button type="button" class="btn btn-sm btn-primary" 
+            data-ng-click="enterRoom(room.id, room.name)">
+            Enter
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" id="row-list-invitations">
+    <div class="col-xs-12">
+      
+      <h3>Invitations</h3>
+
+      <div class="invitation-container" data-ng-repeat="invitation in invitations track by invitation.id">
+        <p>Sender: {{ invitation.fromUserName }}</p>
+        <p>Room: {{ invitation.roomName }}</p>
+        <button type="button" class="btn btn-success"
+          data-ng-click="acceptInvitation(invitation.id)">
+          Accept
+        </button>
+        <button type="button" class="btn btn-danger"
+          data-ng-click="declineInvitation(invitation.id)">
+          Decline
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
