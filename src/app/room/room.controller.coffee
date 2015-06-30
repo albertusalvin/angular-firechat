@@ -47,7 +47,7 @@ angular.module "angularFirechat"
         .then (messages) ->
           assignMessages messages
         .catch (error) ->
-          AlertService.showErrorMessage error.message, error.code          
+          AlertService.showErrorMessage error.message, error.code
 
     assignMessages = (messages) ->
       arr = UtilityService.convertObjectToArray messages, 'id'

@@ -11,7 +11,7 @@ angular.module "firebaseFactory", []
     FirebaseFactory.createUser = (email, password) ->
       def = $q.defer()
       
-      if firebaseRef then createUser def, email, password 
+      if firebaseRef then createUser def, email, password
       else def.reject errorFirebaseNotInitialized()
       
       return def.promise
@@ -82,7 +82,7 @@ angular.module "firebaseFactory", []
         .on 'value', (snapshot) ->
           if snapshot.numChildren() is 1
             def.resolve snapshot.val()
-          else 
+          else
             def.resolve 0
 
       return def.promise

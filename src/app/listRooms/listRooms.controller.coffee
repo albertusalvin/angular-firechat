@@ -77,7 +77,7 @@ angular.module "angularFirechat"
     pageReady = ->
       $scope.pageLoading = false
 
-    init()  
+    init()
     FirechatFactory.bindToFirechat 'user-update', updateListRooms
     FirechatFactory.bindToFirechat 'user-update', updateListInvitations
 
