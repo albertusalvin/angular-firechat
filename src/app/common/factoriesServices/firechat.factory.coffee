@@ -24,6 +24,9 @@ angular.module "firechatFactory", []
             .on 'value', (snapshot) ->
               resolve snapshot.val()
 
+    FirechatFactory.getCurrentUser = ->
+      return firechatRef._user
+
     FirechatFactory.setUser = (authData) ->
       uid = authData.uid
       username = authData[authData.provider].email.replace(/@.*/, '')
@@ -47,6 +50,9 @@ angular.module "firechatFactory", []
             .orderByKey().equalTo userid
             .on 'value', (snapshot) ->
               resolve snapshot.val()[userid].rooms
+
+    FirechatFactory.getCurrentRoom = ->
+      return currentRoom
 
     FirechatFactory.getRoomMetadata = (roomId) ->
       return $q (resolve, reject) ->
@@ -130,12 +136,6 @@ angular.module "firechatFactory", []
         for inv in invitations
           getRoomMetaAndPushToArray inv, res
         resolve res
-
-    FirechatFactory.getCurrentUser = ->
-      return firechatRef._user
-
-    FirechatFactory.getCurrentRoom = ->
-      return currentRoom
 
     setCurrentRoom = (id, name) ->
       currentRoom.id = id
